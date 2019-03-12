@@ -1,5 +1,11 @@
-// Get request function
-
+// Skaf devices
+// TODO: JSON parse
+function GetDevices(){
+  var http = new XMLHttpRequest();
+  http.open("GET","localhost:80/api/getdevices.php",false);
+  http.send(null);
+  return http.responseText;
+}
 
 // Refresh side
 function refresh() {
