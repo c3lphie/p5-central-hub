@@ -2,6 +2,8 @@
 
 require_once __DIR__ . "/../../lib/Database.php";
 require_once __DIR__ . "/../../lib/Device.php";
+require_once __DIR__ . "/../../lib/MacUtils.php";
+require_once __DIR__ . "/../../lib/IpUtils.php";
 
 $error = "";
 
@@ -9,6 +11,11 @@ if (!isset($_GET["mac"])) $error = $error . "mac, ";
 if (!isset($_GET["ip"])) $error = $error . "ip, ";
 if (!isset($_GET["type"])) $error = $error . "type, ";
 if (!isset($_GET["name"])) $error = $error . "name, ";
+
+$mac = (string)$_GET["mac"];
+$ip = (string)$_GET["ip"];
+$type = (int)$_GET["type"];
+$name = (string)$_GET["name"];
 
 
 if ($error != "")
@@ -23,7 +30,12 @@ if ($error != "")
 $db = new Database();
 
 try {
-    $device = new Device((string)$_GET["mac"], (string)$_GET["ip"], (int)$_GET["type"], new DateTime("now"), (string)$_GET["name"]);
+    echo $mac;
+
+    if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
+    if (!IpUtils::Validate($ip)) die ('{"error": "ip is invalid"}');
+
+    $device = new Device($mac, $ip, $type, new DateTime("now"), $name);
 } catch (Exception $e) {
     die('{"error": "Could not create DateTime"}');
 }
