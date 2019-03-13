@@ -36,7 +36,7 @@ class Device
                 $mac = MacUtils::ToInt($mac);
 
             } else {
-                die("mac is not a valid type (int|string)");
+                Error("mac is not a valid type (int|string)");
             }
         }
 
@@ -47,12 +47,12 @@ class Device
                 $ip = IpUtils::ToInt($ip);
 
             } else {
-                die("ip is not a valid type (int|string)");
+                Error("ip is not a valid type (int|string)");
             }
         }
-        if (!is_int($type)) die("type is not an int");
-        if (!is_a($lastSeen, 'DateTime')) die("lastSeen is not a DateTime, it was a :" . gettype($lastSeen));
-        if (!is_string($name)) die("name is not a string");
+        if (!is_int($type)) Error("type is not an int");
+        if (!is_a($lastSeen, 'DateTime')) Error("lastSeen is not a DateTime, it was a :" . gettype($lastSeen));
+        if (!is_string($name)) Error("name is not a string");
 
         $this->_mac = $mac;
         $this->_ip = $ip;
@@ -150,7 +150,7 @@ class Device
     public function GetJson(): string
     {
         $json = json_encode($this->GetArray());
-        if ($json == false) die("GetJson failed");
+        if ($json == false) Error("GetJson failed");
 
         return $json;
     }
