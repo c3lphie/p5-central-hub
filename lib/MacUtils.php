@@ -14,7 +14,7 @@ abstract class MacUtils
     {
         if (!is_string($mac)) Error("mac is not a string");
 
-        if (strlen($mac < 12)) return false;
+        if (strlen($mac != 17)) return false;
 
         return preg_match("/[0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F]/", $mac) == 1;
     }
