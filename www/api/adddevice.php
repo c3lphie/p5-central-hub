@@ -30,8 +30,6 @@ if ($error != "")
 $db = new Database();
 
 try {
-    echo $mac;
-
     if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
     if (!IpUtils::Validate($ip)) die ('{"error": "ip is invalid"}');
 
