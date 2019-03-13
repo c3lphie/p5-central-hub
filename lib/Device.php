@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/Error.php";
 require_once __DIR__ . "/MacUtils.php";
+require_once __DIR__ . "/IpUtils.php";
 
 abstract class DeviceType
 {
@@ -41,7 +42,10 @@ class Device
 
         if (!is_int($ip)) {
             if (is_string($ip)) {
-                $ip = ip2long($ip);
+                if (!IpUtils::Validate($ip)) Error("ip is not valid");
+
+                $ip = IpUtils::ToInt($ip);
+
             } else {
                 die("ip is not a valid type (int|string)");
             }
@@ -91,7 +95,7 @@ class Device
      */
     public function GetIpHumanReadable(): string
     {
-        return long2ip($this->_ip);
+        return IpUtils::ToString($this->_ip);
     }
 
     /**
@@ -145,9 +149,7 @@ class Device
      */
     public function GetJson(): string
     {
-        $array = array('mac' => $this->GetMacHumanReadable(), 'ip' => $this->GetIpHumanReadable(), 'type' => $this->GetType(), 'lastSeen' => $this->GetLastSeenHumanReadable(), 'name' => $this->GetName());
-
-        $json = json_encode($array);
+        $json = json_encode($this->GetArray());
         if ($json == false) die("GetJson failed");
 
         return $json;
