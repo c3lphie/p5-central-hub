@@ -12,7 +12,7 @@ function refresh() {
 
 // Ny tabelrække
 function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
-  var table = document.getElementById(tableId);
+  var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
   var row = table.insertRow(1);
 
   if (cell3Text == null) {
@@ -39,7 +39,7 @@ function GetDevices(urlJson) {
   })
   .then(function(myJson) {
     for (var i in myJson) {
-      newTableRow('deviceList',myJson[i].name, myJson[i].email,myJson[i].id);
+      newTableRow('deviceList',myJson[i].name, myJson[i].ip,myJson[i].type);
     }
   });
 }

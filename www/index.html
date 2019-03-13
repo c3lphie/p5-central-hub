@@ -23,40 +23,60 @@
   </style>
 </head>
 
-<body onload="GetDevices('https://jsonplaceholder.typicode.com/users')">
+<body onload="GetDevices('localhost:80/api/getdevices.php')">
   <div class="main">
     <h1>Central hub</h1>
     <button type="button" name="button" onclick="refresh()">reload</button>
     <div class="userdevices">
       <h2>Mine devices</h2>
-      <div class="userdevicelist">
+      <div class="list">
         <table id="userDeviceList">
-          <tr>
-            <th>Navn</th>
-            <th>Ip</th>
-            <th>Mac</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>Navn</th>
+              <th>Ip</th>
+              <th>Mac</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
     <div class="events">
       <h2>Events</h2>
-      <div class="eventlist">
+      <div class="list">
         <table id="eventList">
-          <tr>
-            <th>Event navn</th>
-            <th>Beskrivelse</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>Event navn</th>
+              <th>Beskrivelse</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
     <div class="devices">
       <h2>IOT devices</h2>
-      <div class="devicelist">
+      <div class="list">
         <table id="deviceList">
-          <th>Navn</th>
-          <th>Ip</th>
-          <th>Type</th>
+          <thead>
+            <tr>
+              <th>Navn</th>
+              <th>Ip</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
