@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__ . "/Error.php";
+require_once __DIR__ . "/MacUtils.php";
+
 abstract class DeviceType
 {
     const WifiTracker = 0;
@@ -27,8 +30,10 @@ class Device
     {
         if (!is_int($mac)) {
             if (is_string($mac)) {
-                $mac = str_replace(":", "", $mac);
-                $mac = (int)base_convert($mac, 16, 10);
+                if (!MacUtils::Validate($mac)) Error("mac is not valid");
+
+                $mac = MacUtils::ToInt($mac);
+
             } else {
                 die("mac is not a valid type (int|string)");
             }
@@ -68,10 +73,7 @@ class Device
      */
     public function GetMacHumanReadable(): string
     {
-        $hex = base_convert($this->_mac, 10, 16);
-        while (strlen($hex) < 12)
-            $hex = '0' . $hex;
-        return strtoupper(implode(':', str_split($hex, 2)));
+        return MacUtils::ToString($this->_mac);
     }
 
     /**
