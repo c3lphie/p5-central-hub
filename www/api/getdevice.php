@@ -12,9 +12,9 @@ $db = new Database();
 
 if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
 
-if (!$db->DeviceExistsMac($_GET["mac"])) die ('{"error": "Device not found"}');
+if (!$db->DeviceExistsMac($mac)) die ('{"error": "Device not found"}');
 
-$device = $db->GetDevice($_GET["mac"]);
+$device = $db->GetDevice($mac);
 
 echo $device->GetJson();
 
