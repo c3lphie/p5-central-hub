@@ -3,7 +3,7 @@
 require_once __DIR__ . "/Error.php";
 
 
-const UINT32_MAX = 4294967295;
+const UINT32_MAX = 0xFFFFFFFF;
 
 abstract class IpUtils
 {

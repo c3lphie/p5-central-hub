@@ -2,6 +2,8 @@
 
 require_once __DIR__ . "/Error.php";
 
+const UINT48_MAX = 0xFFFFFFFFFFFF;
+
 abstract class MacUtils
 {
     /**
@@ -42,6 +44,8 @@ abstract class MacUtils
     public static function ToString($mac):string
     {
         if (!is_int($mac)) Error("mac is not an int");
+
+        if ($mac > UINT48_MAX) Error("mac is bigger than a 48-bit int");
 
         $hex = base_convert($mac, 10, 16);
         while (strlen($hex) < 12)
