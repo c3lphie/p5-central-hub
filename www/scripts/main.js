@@ -1,12 +1,3 @@
-// Skaf devices
-// TODO: JSON parse
-function GetDevices(){
-  var http = new XMLHttpRequest();
-  http.open("GET","localhost:80/api/getdevices.php",false);
-  http.send(null);
-  return http.responseText;
-}
-
 // Refresh side
 function refresh() {
   location.reload(true);
@@ -37,4 +28,18 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
     cell2.innerHTML = cell2Text;
     cell3.innerHTML = cell3Text;
   }
+}
+
+// Skaf devices
+// "localhost:80/api/getdevices.php"
+function GetDevices(urlJson) {
+  fetch(urlJson)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    for (var i in myJson) {
+      newTableRow('deviceList',myJson[i].name, myJson[i].email,myJson[i].id);
+    }
+  });
 }
