@@ -29,11 +29,9 @@ class Database
     {
         $conn = new mysqli(self::$databaseHost, self::$databaseUsername, self::$databasePassword, self::$databaseDatabase);
 
-        if ($conn->connect_error) {
-            Error($conn->connect_error);
-        }
+        if ($conn->connect_error) Error($conn->connect_error);
 
-        $conn->set_charset("utf8mb4");
+        if (!$conn->set_charset("utf8mb4")) Error("Setting charset failed");
 
 
         return $conn;
