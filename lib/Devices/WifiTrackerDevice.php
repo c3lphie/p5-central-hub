@@ -44,6 +44,8 @@ class WifiTrackerDevice extends Device
             }
         }
 
+        
+
         return -1; //Not implemented
     }
 }

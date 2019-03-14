@@ -2,8 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . "/Error.php";
-require_once __DIR__ . "/Device.php";
 require_once __DIR__ . "/MacUtils.php";
+require_once __DIR__ . "/Device.php";
+require_once __DIR__ . "/TrackedDevice.php";
 
 
 class Database
@@ -197,6 +198,38 @@ class Database
 
         return $devices;
 
+    }
+
+    /**
+     * @param $mac int|string
+     * @return TrackedDevice
+     */
+    public function GetTrackedDevice($mac):TrackedDevice
+    {
+        if (!is_int($mac)) {
+            if (is_string($mac)) {
+                if (!MacUtils::Validate($mac)) Error("mac is not valid");
+
+                $mac = MacUtils::ToInt($mac);
+
+            } else {
+                Error("mac is not a valid type (int|string)");
+            }
+        }
+        $mac = $this->_conn->real_escape_string((string)$mac);
+
+        $sql = "SELECT Mac, LastSeen Name FROM TrackedDevices WHERE Mac='$mac' LIMIT 1";
+
+        $row = $this->_conn->query($sql)->fetch_row();
+
+        if ($row == null)
+            Error("GetTrackedDevice failed: " . $this->_conn->error);
+
+        $mac = (int)$row[0];
+        $lastSeen = DateTime::createFromFormat("Y-m-d H:i:s", (string)$row[1]);
+        $name = (string)$row[2];
+
+        return new TrackedDevice($mac, $lastSeen, $name);
     }
 }
 
