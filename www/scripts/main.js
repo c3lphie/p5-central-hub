@@ -38,8 +38,13 @@ function GetDevices(urlJson) {
     return response.json();
   })
   .then(function(myJson) {
-    for (var i in myJson) {
-      newTableRow('deviceList',myJson[i].name, myJson[i].ip,myJson[i].type);
+    if (myJson.hasOwnProperty('error')) {
+      alert("An error has occured, check console for more information!");
+      console.log(myJson.error);
+    } else {
+      for (var i in myJson) {
+        newTableRow('deviceList',myJson[i].name, myJson[i].ip,myJson[i].type);
+      }
     }
   });
 }
