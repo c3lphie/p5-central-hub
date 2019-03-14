@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/Device.php';
+require_once __DIR__ . "/Error.php";
+require_once __DIR__ . "/Device.php";
+require_once __DIR__ . "/MacUtils.php";
 
 
 class Database
@@ -25,7 +27,7 @@ class Database
         $conn = new mysqli(self::$databaseHost, self::$databaseUsername, self::$databasePassword, self::$databaseDatabase);
 
         if ($conn->connect_error) {
-            die($conn->connect_error);
+            Error($conn->connect_error);
         }
 
         return $conn;
@@ -38,7 +40,7 @@ class Database
      */
     public function AddDevice($device): void
     {
-        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) die("device is not a Device or a subclass of Device");
+        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) Error("device is not a Device or a subclass of Device");
 
 
         $mac = $this->_conn->real_escape_string($device->GetMac());
@@ -49,7 +51,7 @@ class Database
 
         $sql = "INSERT INTO Devices (Mac, Ip, Type, LastSeen, Name) VALUES ('$mac', '$ip', '$type', '$lastSeen', '$name')";
 
-        if (!$this->_conn->query($sql)) die("AddDevice failed: " . $this->_conn->error);
+        if (!$this->_conn->query($sql)) Error("AddDevice failed: " . $this->_conn->error);
     }
 
     /**
@@ -59,7 +61,7 @@ class Database
      */
     public function UpdateDevice($device): void
     {
-        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) die("device is not a Device or a subclass of Device");
+        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) Error("device is not a Device or a subclass of Device");
 
         $mac = $this->_conn->real_escape_string($device->GetMac());
         $ip = $this->_conn->real_escape_string($device->GetIp());
@@ -69,7 +71,7 @@ class Database
 
         $sql = "UPDATE Devices SET Ip='$ip', Type='$type', LastSeen='$lastSeen', Name='$name' WHERE Mac=$mac";
 
-        if (!$this->_conn->query($sql)) die("UpdateDevice failed: " . $this->_conn->error);
+        if (!$this->_conn->query($sql)) Error("UpdateDevice failed: " . $this->_conn->error);
     }
 
 
@@ -98,7 +100,7 @@ class Database
      */
     public function DeviceExists($device): bool
     {
-        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) die("device is not a Device or a subclass of Device");
+        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) Error("device is not a Device or a subclass of Device");
 
         return $this->DeviceExistsMac($device->GetMac());
     }
@@ -112,10 +114,10 @@ class Database
     {
         if (!is_int($mac)) {
             if (is_string($mac)) {
-                $mac = str_replace(":", "", $mac);
-                $mac = (int)base_convert($mac, 16, 10);
+                $mac = MacUtils::ToInt($mac);
+
             } else {
-                die("mac is not a valid type (int|string)");
+                Error("mac is not a valid type (int|string)");
             }
         }
         $mac = $this->_conn->real_escape_string($mac);
@@ -141,12 +143,11 @@ class Database
         {
             if (is_string($mac))
             {
-                $mac = str_replace(":", "", $mac);
-                $mac = (int)base_convert($mac, 16, 10);
+                $mac = MacUtils::ToInt($mac);
             }
             else
             {
-                die("mac is not a valid type (int|string)");
+                Error("mac is not a valid type (int|string)");
             }
         }
 
@@ -157,7 +158,7 @@ class Database
         $row = $this->_conn->query($sql)->fetch_row();
 
         if ($row == null)
-            die("GetDevice failed: " . $this->_conn->error);
+            Error("GetDevice failed: " . $this->_conn->error);
 
         $mac = (int)$row[0];
         $ip = (int)$row[1];
