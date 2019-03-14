@@ -13,6 +13,7 @@ class TrackedDevice
     /**
      * TrackedDevice constructor.
      * @param $mac int|string
+     * @param DateTime $lastSeen
      * @param string $name
      */
     public function __construct($mac, DateTime $lastSeen, string $name)
