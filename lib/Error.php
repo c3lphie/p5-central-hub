@@ -16,5 +16,5 @@ function Error($msg)
 
     debug_print_backtrace();
 
-    echo "</code>";
+    die ("</code>");
 }
