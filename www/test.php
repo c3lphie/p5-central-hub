@@ -1,13 +1,9 @@
 <?php
-require_once '../lib/database.php';
 
-$conn = GetConnection();
+require_once __DIR__ . "/../lib/MacUtils.php";
 
-$query = $conn->query("SHOW DATABASES");
+echo MacUtils::Validate("AA:BB:CC:DD:EE:FF");
 
-while($row = mysqli_fetch_assoc($query)){
-    foreach($row as $cname => $cvalue){
-        print "$cname: $cvalue\t";
-    }
-    print "\r\n";
-}
+echo MacUtils::Validate("AA:BB:CC:DD:EE:GG");
+
+echo MacUtils::Validate(1);
