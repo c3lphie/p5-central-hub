@@ -33,11 +33,11 @@ try {
     if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
     if (!IpUtils::Validate($ip)) die ('{"error": "ip is invalid"}');
 
-    $device = new Device($mac, $ip, $type, new DateTime("now"), $name);
+    $device = new Device(MacUtils::ToInt($mac), IpUtils::ToInt($ip), $type, new DateTime("now"), $name);
 } catch (Exception $e) {
     die('{"error": "Could not create DateTime"}');
 }
 
-if (!$db->DeviceExists($device)) die('{"error": "Device does not exist"}');
+if (!$db->DeviceExists($device->GetMac())) die('{"error": "Device does not exist"}');
 
 $db->UpdateDevice($device);

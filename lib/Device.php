@@ -22,36 +22,14 @@ class Device
 
     /**
      * Device constructor.
-     * @param $mac int|string
-     * @param $ip int|string
+     * @param $mac int
+     * @param $ip int
      * @param $type int
      * @param $lastSeen DateTime
      * @param $name string
      */
-    function __construct($mac, $ip, int $type, DateTime $lastSeen, string $name)
+    function __construct(int $mac, int $ip, int $type, DateTime $lastSeen, string $name)
     {
-        if (!is_int($mac)) {
-            if (is_string($mac)) {
-                if (!MacUtils::Validate($mac)) Error("mac is not valid");
-
-                $mac = MacUtils::ToInt($mac);
-
-            } else {
-                Error("mac is not a valid type (int|string)");
-            }
-        }
-
-        if (!is_int($ip)) {
-            if (is_string($ip)) {
-                if (!IpUtils::Validate($ip)) Error("ip is not valid");
-
-                $ip = IpUtils::ToInt($ip);
-
-            } else {
-                Error("ip is not a valid type (int|string)");
-            }
-        }
-
         $this->_mac = $mac;
         $this->_ip = $ip;
         $this->_type = $type;

@@ -81,7 +81,7 @@ class Database
      */
     public function UpdateOrAddDevice(Device $device):void
     {
-        if ($this->DeviceExists($device))
+        if ($this->DeviceExists($device->GetMac()))
         {
             $this->UpdateDevice($device);
         }
@@ -93,29 +93,11 @@ class Database
 
     /**
      * Checks if a device exists.
-     * @param $device Device
+     * @param $mac int
      * @return bool
      */
-    public function DeviceExists(Device $device): bool
+    public function DeviceExists(int $mac): bool
     {
-        return $this->DeviceExistsMac($device->GetMac());
-    }
-
-    /**
-     * Checks if a device exists.
-     * @param $mac int|string
-     * @return bool
-     */
-    public function DeviceExistsMac($mac): bool
-    {
-        if (!is_int($mac)) {
-            if (is_string($mac)) {
-                $mac = MacUtils::ToInt($mac);
-
-            } else {
-                Error("mac is not a valid type (int|string)");
-            }
-        }
         $mac = $this->_conn->real_escape_string((string)$mac);
 
         $sql = "SELECT 1 FROM Devices WHERE Mac='$mac' LIMIT 1";
@@ -130,23 +112,11 @@ class Database
     /**
      * Gets a device.
      * Warning: This function does not check if the device exists first.
-     * @param $mac int|string
+     * @param $mac int
      * @return Device
      */
-    public function GetDevice($mac): Device
+    public function GetDevice(int $mac): Device
     {
-        if (!is_int($mac))
-        {
-            if (is_string($mac))
-            {
-                $mac = MacUtils::ToInt($mac);
-            }
-            else
-            {
-                Error("mac is not a valid type (int|string)");
-            }
-        }
-
         $mac = $this->_conn->real_escape_string((string)$mac);
 
         $sql = "SELECT Mac, Ip, Type, LastSeen, Name FROM Devices WHERE Mac='$mac' LIMIT 1";
@@ -163,10 +133,7 @@ class Database
         $name = $row[4];
 
 
-        $device = new Device($mac, $ip, $type, $lastSeen, $name);
-
-        return $device;
-
+        return new Device($mac, $ip, $type, $lastSeen, $name);
     }
 
     /**
@@ -201,21 +168,11 @@ class Database
     }
 
     /**
-     * @param $mac int|string
+     * @param $mac int
      * @return TrackedDevice
      */
-    public function GetTrackedDevice($mac):TrackedDevice
+    public function GetTrackedDevice(int $mac):TrackedDevice
     {
-        if (!is_int($mac)) {
-            if (is_string($mac)) {
-                if (!MacUtils::Validate($mac)) Error("mac is not valid");
-
-                $mac = MacUtils::ToInt($mac);
-
-            } else {
-                Error("mac is not a valid type (int|string)");
-            }
-        }
         $mac = $this->_conn->real_escape_string((string)$mac);
 
         $sql = "SELECT Mac, LastSeen Name FROM TrackedDevices WHERE Mac='$mac' LIMIT 1";

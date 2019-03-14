@@ -48,4 +48,19 @@ abstract class MacUtils
         return strtoupper(implode(':', str_split($hex, 2)));
     }
 
+
+    /**
+     * Normalizes the mac address to a int.
+     * If it's already an int it just returns it.
+     * If it's a string its converted to an int.
+     * @param $mac int|string
+     * @return int
+     */
+    public static function NormalizeToInt($mac):int
+    {
+        if (is_int($mac)) return $mac;
+        if (is_string($mac)) return self::ToInt($mac);
+
+        Error("mac is not a valid type (int|string)");
+    }
 }
