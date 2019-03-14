@@ -44,15 +44,14 @@ class Database
      */
     public function AddDevice(Device $device): void
     {
-        $mac = $this->_conn->real_escape_string((string)$device->GetMac());
-        $ip = $this->_conn->real_escape_string((string)$device->GetIp());
-        $type = $this->_conn->real_escape_string((string)$device->GetType());
-        $lastSeen = $this->_conn->real_escape_string($device->GetLastSeen()->format("Y-m-d H:i:s"));
-        $name = $this->_conn->real_escape_string($device->GetName());
+        $statement = $this->_conn->prepare("INSERT INTO Devices (Mac, Ip, Type, LastSeen, Name) VALUES (?, ?, ?, ?, ?)");
 
-        $sql = "INSERT INTO Devices (Mac, Ip, Type, LastSeen, Name) VALUES ('$mac', '$ip', '$type', '$lastSeen', '$name')";
+        if ($statement == false) Error("Could not create statement");
 
-        if (!$this->_conn->query($sql)) Error("AddDevice failed: " . $this->_conn->error);
+        $statement->bind_param("iiiss", $device->GetMac(), $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName());
+
+
+        if (!$statement->execute()) Error("AddDevice failed: " . $statement->error);
     }
 
     /**
@@ -62,15 +61,12 @@ class Database
      */
     public function UpdateDevice(Device $device): void
     {
-        $mac = $this->_conn->real_escape_string((string)$device->GetMac());
-        $ip = $this->_conn->real_escape_string((string)$device->GetIp());
-        $type = $this->_conn->real_escape_string((string)$device->GetType());
-        $lastSeen = $this->_conn->real_escape_string($device->GetLastSeen()->format("Y-m-d H:i:s"));
-        $name = $this->_conn->real_escape_string($device->GetName());
+        $statement = $this->_conn->prepare("UPDATE Devices SET Ip=?, Type=?, LastSeen=?, Name=? WHERE Mac=?");
 
-        $sql = "UPDATE Devices SET Ip='$ip', Type='$type', LastSeen='$lastSeen', Name='$name' WHERE Mac=$mac";
+        $statement->bind_param("iissi", $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName(), $device->GetMac());
 
-        if (!$this->_conn->query($sql)) Error("UpdateDevice failed: " . $this->_conn->error);
+
+        if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
     }
 
 
@@ -99,15 +95,13 @@ class Database
      */
     public function DeviceExists(int $mac): bool
     {
-        $mac = $this->_conn->real_escape_string((string)$mac);
+        $statement = $this->_conn->prepare("SELECT 1 FROM Devices WHERE Mac=? LIMIT 1");
 
-        $sql = "SELECT 1 FROM Devices WHERE Mac='$mac' LIMIT 1";
+        $statement->bind_param("i", $mac);
 
-        if ($this->_conn->query($sql)->fetch_row() == null) {
-            return false;
-        }
+        if (!$statement->execute()) Error("DeviceExists failed");
 
-        return true;
+        return $statement->fetch();
     }
 
     /**
@@ -118,23 +112,28 @@ class Database
      */
     public function GetDevice(int $mac): Device
     {
-        $mac = $this->_conn->real_escape_string((string)$mac);
+        $statement = $this->_conn->prepare("SELECT Mac, Ip, Type, LastSeen, Name FROM Devices WHERE Mac=? LIMIT 1");
 
-        $sql = "SELECT Mac, Ip, Type, LastSeen, Name FROM Devices WHERE Mac='$mac' LIMIT 1";
+        if ($statement == false) Error("Could not create statement");
 
-        $row = $this->_conn->query($sql)->fetch_row();
+        $statement->bind_param("i", $mac);
 
-        if ($row == null)
-            Error("GetDevice failed: " . $this->_conn->error);
+        if (!$statement->execute()) Error("GetDevice failed: " . $statement->error);
 
-        $mac = (int)$row[0];
-        $ip = (int)$row[1];
-        $type = (int)$row[2];
-        $lastSeen = DateTime::createFromFormat("Y-m-d H:i:s", $row[3]);
-        $name = $row[4];
+        /** @var int $mac */
+        /** @var int $ip */
+        /** @var int $type */
+        /** @var string $lastSeen */
+        /** @var string $name */
+        $statement->bind_result($mac, $ip, $type, $lastSeen, $name);
 
+        if (!$statement->fetch()) Error("Device does not exist");
 
-        return new Device($mac, $ip, $type, $lastSeen, $name);
+        $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $lastSeen);
+
+        if (!$datetime) Error("Could not convert datetime");
+
+        return new Device($mac, $ip, $type, $datetime, $name);
     }
 
     /**
@@ -143,24 +142,23 @@ class Database
      */
     public function GetDevices(): array
     {
+        $statement = $this->_conn->prepare("SELECT Mac, Ip, Type, LastSeen, Name FROM Devices");
 
-        $sql = "SELECT Mac, Ip, Type, LastSeen, Name FROM Devices";
+        if (!$statement->execute()) Error("GetDevices failed");
 
+        /** @var int $mac */
+        /** @var int $ip */
+        /** @var int $type */
+        /** @var string $lastSeen */
+        /** @var string $name */
+        $statement->bind_result($mac, $ip, $type, $lastSeen, $name);
 
         $devices = array();
+        while ($statement->fetch()) {
+            $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $lastSeen);
 
-        $query = $this->_conn->query($sql);
-
-        while ($row = $query->fetch_assoc()) {
-
-            $mac = (int)$row["Mac"];
-            $ip = (int)$row["Ip"];
-            $type = (int)$row["Type"];
-            $lastSeen = DateTime::createFromFormat("Y-m-d H:i:s", $row["LastSeen"]);
-            $name = $row["Name"];
-
-
-            array_push($devices, new Device($mac, $ip, $type, $lastSeen, $name));
+            if (!$datetime) Error("Could not convert datetime");
+            array_push($devices, new Device($mac, $ip, $type, $datetime, $name));
         }
 
 
@@ -174,20 +172,25 @@ class Database
      */
     public function GetTrackedDevice(int $mac):TrackedDevice
     {
-        $mac = $this->_conn->real_escape_string((string)$mac);
 
-        $sql = "SELECT Mac, LastSeen Name FROM TrackedDevices WHERE Mac='$mac' LIMIT 1";
+        $statement = $this->_conn->prepare("SELECT Mac, LastSeen, Name FROM TrackedDevices WHERE Mac=? LIMIT 1");
 
-        $row = $this->_conn->query($sql)->fetch_row();
+        $statement->bind_param("i", $mac);
 
-        if ($row == null)
-            Error("GetTrackedDevice failed: " . $this->_conn->error);
+        if (!$statement->execute()) Error("GetTrackedDevice failed: " . $statement->error);
 
-        $mac = (int)$row[0];
-        $lastSeen = DateTime::createFromFormat("Y-m-d H:i:s", (string)$row[1]);
-        $name = (string)$row[2];
+        /** @var int $mac */
+        /** @var string $lastSeen */
+        /** @var string $name */
+        $statement->bind_result($mac, $lastSeen, $name);
 
-        return new TrackedDevice($mac, $lastSeen, $name);
+        if (!$statement->fetch()) Error("TrackedDevice does not exist");
+
+        $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $lastSeen);
+
+        if (!$datetime) Error("Could not convert datetime");
+
+        return new TrackedDevice($mac, $datetime, $name);
     }
 }
 
