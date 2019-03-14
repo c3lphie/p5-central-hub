@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . "/Error.php";
+require_once __DIR__ . "/MacUtils.php";
+require_once __DIR__ . "/IpUtils.php";
+
 abstract class DeviceType
 {
     const WifiTracker = 0;
@@ -27,23 +31,28 @@ class Device
     {
         if (!is_int($mac)) {
             if (is_string($mac)) {
-                $mac = str_replace(":", "", $mac);
-                $mac = (int)base_convert($mac, 16, 10);
+                if (!MacUtils::Validate($mac)) Error("mac is not valid");
+
+                $mac = MacUtils::ToInt($mac);
+
             } else {
-                die("mac is not a valid type (int|string)");
+                Error("mac is not a valid type (int|string)");
             }
         }
 
         if (!is_int($ip)) {
             if (is_string($ip)) {
-                $ip = ip2long($ip);
+                if (!IpUtils::Validate($ip)) Error("ip is not valid");
+
+                $ip = IpUtils::ToInt($ip);
+
             } else {
-                die("ip is not a valid type (int|string)");
+                Error("ip is not a valid type (int|string)");
             }
         }
-        if (!is_int($type)) die("type is not an int");
-        if (!is_a($lastSeen, 'DateTime')) die("lastSeen is not a DateTime, it was a :" . gettype($lastSeen));
-        if (!is_string($name)) die("name is not a string");
+        if (!is_int($type)) Error("type is not an int");
+        if (!is_a($lastSeen, 'DateTime')) Error("lastSeen is not a DateTime, it was a :" . gettype($lastSeen));
+        if (!is_string($name)) Error("name is not a string");
 
         $this->_mac = $mac;
         $this->_ip = $ip;
@@ -68,10 +77,7 @@ class Device
      */
     public function GetMacHumanReadable(): string
     {
-        $hex = base_convert($this->_mac, 10, 16);
-        while (strlen($hex) < 12)
-            $hex = '0' . $hex;
-        return strtoupper(implode(':', str_split($hex, 2)));
+        return MacUtils::ToString($this->_mac);
     }
 
     /**
@@ -89,7 +95,7 @@ class Device
      */
     public function GetIpHumanReadable(): string
     {
-        return long2ip($this->_ip);
+        return IpUtils::ToString($this->_ip);
     }
 
     /**
@@ -143,10 +149,8 @@ class Device
      */
     public function GetJson(): string
     {
-        $array = array('mac' => $this->GetMacHumanReadable(), 'ip' => $this->GetIpHumanReadable(), 'type' => $this->GetType(), 'lastSeen' => $this->GetLastSeenHumanReadable(), 'name' => $this->GetName());
-
-        $json = json_encode($array);
-        if ($json == false) die("GetJson failed");
+        $json = json_encode($this->GetArray());
+        if ($json == false) Error("GetJson failed");
 
         return $json;
     }
