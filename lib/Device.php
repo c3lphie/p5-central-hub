@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__ . "/Error.php";
 require_once __DIR__ . "/MacUtils.php";
@@ -27,7 +28,7 @@ class Device
      * @param $lastSeen DateTime
      * @param $name string
      */
-    function __construct($mac, $ip, $type, $lastSeen, $name)
+    function __construct($mac, $ip, int $type, DateTime $lastSeen, string $name)
     {
         if (!is_int($mac)) {
             if (is_string($mac)) {
@@ -50,9 +51,6 @@ class Device
                 Error("ip is not a valid type (int|string)");
             }
         }
-        if (!is_int($type)) Error("type is not an int");
-        if (!is_a($lastSeen, 'DateTime')) Error("lastSeen is not a DateTime, it was a :" . gettype($lastSeen));
-        if (!is_string($name)) Error("name is not a string");
 
         $this->_mac = $mac;
         $this->_ip = $ip;

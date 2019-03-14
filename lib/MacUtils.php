@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__ . "/Error.php";
 
@@ -12,10 +13,8 @@ abstract class MacUtils
      * @param $mac string
      * @return bool
      */
-    public static function Validate($mac):bool
+    public static function Validate(string $mac):bool
     {
-        if (!is_string($mac)) Error("mac is not a string");
-
         if (strlen($mac) != 17) return false;
 
         return preg_match("/[0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F][:][0-9A-F][0-9A-F]/", $mac) == 1;
@@ -27,10 +26,8 @@ abstract class MacUtils
      * @param $mac string
      * @return int
      */
-    public static function ToInt($mac):int
+    public static function ToInt(string $mac):int
     {
-        if (!is_string($mac)) Error("mac is not a string");
-
         if (!self::Validate($mac)) Error("mac is not valid");
 
         return (int)base_convert($mac, 16, 10);
@@ -41,10 +38,8 @@ abstract class MacUtils
      * @param $mac int
      * @return string
      */
-    public static function ToString($mac):string
+    public static function ToString(int $mac):string
     {
-        if (!is_int($mac)) Error("mac is not an int");
-
         if ($mac > UINT48_MAX) Error("mac is bigger than a 48-bit int");
 
         $hex = base_convert($mac, 10, 16);

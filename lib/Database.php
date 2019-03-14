@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 require_once __DIR__ . "/Error.php";
 require_once __DIR__ . "/Device.php";
 require_once __DIR__ . "/MacUtils.php";
@@ -38,14 +40,11 @@ class Database
      * Warning: This function does not check for existing device.
      * @param $device Device
      */
-    public function AddDevice($device): void
+    public function AddDevice(Device $device): void
     {
-        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) Error("device is not a Device or a subclass of Device");
-
-
-        $mac = $this->_conn->real_escape_string($device->GetMac());
-        $ip = $this->_conn->real_escape_string($device->GetIp());
-        $type = $this->_conn->real_escape_string($device->GetType());
+        $mac = $this->_conn->real_escape_string((string)$device->GetMac());
+        $ip = $this->_conn->real_escape_string((string)$device->GetIp());
+        $type = $this->_conn->real_escape_string((string)$device->GetType());
         $lastSeen = $this->_conn->real_escape_string($device->GetLastSeen()->format("Y-m-d H:i:s"));
         $name = $this->_conn->real_escape_string($device->GetName());
 
@@ -59,13 +58,11 @@ class Database
      * Warning: This function does not check if the device is existing.
      * @param $device Device
      */
-    public function UpdateDevice($device): void
+    public function UpdateDevice(Device $device): void
     {
-        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) Error("device is not a Device or a subclass of Device");
-
-        $mac = $this->_conn->real_escape_string($device->GetMac());
-        $ip = $this->_conn->real_escape_string($device->GetIp());
-        $type = $this->_conn->real_escape_string($device->GetType());
+        $mac = $this->_conn->real_escape_string((string)$device->GetMac());
+        $ip = $this->_conn->real_escape_string((string)$device->GetIp());
+        $type = $this->_conn->real_escape_string((string)$device->GetType());
         $lastSeen = $this->_conn->real_escape_string($device->GetLastSeen()->format("Y-m-d H:i:s"));
         $name = $this->_conn->real_escape_string($device->GetName());
 
@@ -81,7 +78,7 @@ class Database
      * If it does not exist it adds it.
      * @param $device Device
      */
-    public function UpdateOrAddDevice($device):void
+    public function UpdateOrAddDevice(Device $device):void
     {
         if ($this->DeviceExists($device))
         {
@@ -98,16 +95,14 @@ class Database
      * @param $device Device
      * @return bool
      */
-    public function DeviceExists($device): bool
+    public function DeviceExists(Device $device): bool
     {
-        if (!is_a($device, "Device") && !is_subclass_of($device, "Device")) Error("device is not a Device or a subclass of Device");
-
         return $this->DeviceExistsMac($device->GetMac());
     }
 
     /**
      * Checks if a device exists.
-     * @param $mac int
+     * @param $mac int|string
      * @return bool
      */
     public function DeviceExistsMac($mac): bool
@@ -120,7 +115,7 @@ class Database
                 Error("mac is not a valid type (int|string)");
             }
         }
-        $mac = $this->_conn->real_escape_string($mac);
+        $mac = $this->_conn->real_escape_string((string)$mac);
 
         $sql = "SELECT 1 FROM Devices WHERE Mac='$mac' LIMIT 1";
 
@@ -134,7 +129,7 @@ class Database
     /**
      * Gets a device.
      * Warning: This function does not check if the device exists first.
-     * @param $mac int
+     * @param $mac int|string
      * @return Device
      */
     public function GetDevice($mac): Device
@@ -151,7 +146,7 @@ class Database
             }
         }
 
-        $mac = $this->_conn->real_escape_string($mac);
+        $mac = $this->_conn->real_escape_string((string)$mac);
 
         $sql = "SELECT Mac, Ip, Type, LastSeen, Name FROM Devices WHERE Mac='$mac' LIMIT 1";
 

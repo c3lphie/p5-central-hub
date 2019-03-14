@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 require_once __DIR__ . "/Error.php";
 
@@ -13,10 +14,8 @@ abstract class IpUtils
      * @param $ip string
      * @return bool
      */
-    public static function Validate($ip):bool
+    public static function Validate(string $ip):bool
     {
-        if (!is_string($ip)) Error("ip is not a string");
-
         $ipLength = strlen($ip);
 
         if ($ipLength > 15 || $ipLength < 7) return false;
@@ -29,10 +28,8 @@ abstract class IpUtils
      * @param $ip string
      * @return int
      */
-    public static function ToInt($ip):int
+    public static function ToInt(string $ip):int
     {
-        if (!is_string($ip)) Error("ip is not a string");
-
         if (!self::Validate($ip)) Error("ip is not valid");
 
         return ip2long($ip);
@@ -43,7 +40,7 @@ abstract class IpUtils
      * @param $ip int
      * @return string
      */
-    public static function ToString($ip):string
+    public static function ToString(int $ip):string
     {
         if ($ip > UINT32_MAX) Error("ip is bigger than a 32-bit int");
 
