@@ -12,8 +12,6 @@ $db = new Database();
 
 if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
 
-$mac = MacUtils::ToInt($mac);
-
 if (!$db->DeviceExists($mac)) die ('{"error": "Device not found"}');
 
 $device = $db->GetDevice($mac);

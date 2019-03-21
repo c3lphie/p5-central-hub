@@ -22,14 +22,17 @@ class Device
 
     /**
      * Device constructor.
-     * @param $mac int
-     * @param $ip int
+     * @param $mac string
+     * @param $ip string
      * @param $type int
      * @param $lastSeen DateTime
      * @param $name string
      */
-    function __construct(int $mac, int $ip, int $type, DateTime $lastSeen, string $name)
+    function __construct(string $mac, string $ip, int $type, DateTime $lastSeen, string $name)
     {
+        if (!MacUtils::Validate($mac)) Error("Mac address is invalid");
+        if (!IpUtils::Validate($ip)) Error("Ip address is invalid");
+
         $this->_mac = $mac;
         $this->_ip = $ip;
         $this->_type = $type;
@@ -38,40 +41,19 @@ class Device
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function GetMac(): int
+    public function GetMac(): string
     {
         return $this->_mac;
     }
 
-
     /**
-     * Gets the mac address as a human readable string.
-     * Example: AA:BB:CC:DD:EE:FF
      * @return string
      */
-    public function GetMacHumanReadable(): string
-    {
-        return MacUtils::ToString($this->_mac);
-    }
-
-    /**
-     * @return int
-     */
-    public function GetIp(): int
+    public function GetIp(): string
     {
         return $this->_ip;
-    }
-
-    /**
-     * Gets the ip address as a human readable string.
-     * Example: 192.168.1.1
-     * @return string
-     */
-    public function GetIpHumanReadable(): string
-    {
-        return IpUtils::ToString($this->_ip);
     }
 
     /**

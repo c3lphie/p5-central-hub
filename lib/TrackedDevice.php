@@ -12,11 +12,11 @@ class TrackedDevice
 
     /**
      * TrackedDevice constructor.
-     * @param $mac int
+     * @param $mac string
      * @param DateTime $lastSeen
      * @param string $name
      */
-    public function __construct(int $mac, DateTime $lastSeen, string $name)
+    public function __construct(string $mac, DateTime $lastSeen, string $name)
     {
         $this->_mac = $mac;
         $this->_lastSeen = $lastSeen;
@@ -24,9 +24,9 @@ class TrackedDevice
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getMac():int
+    public function getMac():string
     {
         return $this->_mac;
     }

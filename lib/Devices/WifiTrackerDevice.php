@@ -10,13 +10,13 @@ class WifiTrackerDevice extends Device
 {
     /**
      * WifiTrackerDevice constructor.
-     * @param $mac int
-     * @param $ip int
+     * @param $mac string
+     * @param $ip string
      * @param $type int
      * @param $lastSeen DateTime
      * @param $name string
      */
-    public function __construct(int $mac, int $ip, int $type, DateTime $lastSeen, string $name)
+    public function __construct(string $mac, string $ip, int $type, DateTime $lastSeen, string $name)
     {
         if ($type != DeviceType::WifiTracker) Error("type is not WifiTracker");
 
@@ -34,14 +34,7 @@ class WifiTrackerDevice extends Device
     {
         if (!is_int($mac))
         {
-            if (is_string($mac))
-            {
-                $mac = MacUtils::ToInt($mac);
-            }
-            else
-            {
-                Error("mac is not an int or a string");
-            }
+            Error("mac is not a string");
         }
 
 

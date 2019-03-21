@@ -90,10 +90,10 @@ class Database
 
     /**
      * Checks if a device exists.
-     * @param $mac int
+     * @param $mac string
      * @return bool
      */
-    public function DeviceExists(int $mac): bool
+    public function DeviceExists(string $mac): bool
     {
         $statement = $this->_conn->prepare("SELECT 1 FROM Devices WHERE Mac=? LIMIT 1");
 
@@ -116,12 +116,12 @@ class Database
 
         if ($statement == false) Error("Could not create statement");
 
-        $statement->bind_param("i", $mac);
+        $statement->bind_param("s", $mac);
 
         if (!$statement->execute()) Error("GetDevice failed: " . $statement->error);
 
-        /** @var int $mac */
-        /** @var int $ip */
+        /** @var string $mac */
+        /** @var string $ip */
         /** @var int $type */
         /** @var string $lastSeen */
         /** @var string $name */
@@ -146,8 +146,8 @@ class Database
 
         if (!$statement->execute()) Error("GetDevices failed");
 
-        /** @var int $mac */
-        /** @var int $ip */
+        /** @var string $mac */
+        /** @var string $ip */
         /** @var int $type */
         /** @var string $lastSeen */
         /** @var string $name */
