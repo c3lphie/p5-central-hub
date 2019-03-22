@@ -30,6 +30,7 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
   }
 }
 
+
 // Skaf devices
 // "localhost:80/api/getdevices.php"
 function GetDevices(urlJson) {
@@ -44,6 +45,42 @@ function GetDevices(urlJson) {
     } else {
       for (var i in myJson) {
         newTableRow('deviceList',myJson[i].name, myJson[i].ip,myJson[i].type);
+      }
+    }
+  });
+}
+
+// Skaf Events
+function GetEvents(urlJson) {
+  fetch(urlJson)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    if (myJson.hasOwnProperty('error')) {
+      alert("An error has occured, check console for more information!");
+      console.log(myJson.error);
+    } else {
+      for (var i in myJson) {
+        newTableRow('eventList',myJson[i].name, myJson[i].ip);
+      }
+    }
+  });
+}
+
+// Skaf userdevices
+function GetUserdevice(urlJson) {
+  fetch(urlJson)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    if (myJson.hasOwnProperty('error')) {
+      alert("An error has occured, check console for more information!");
+      console.log(myJson.error);
+    } else {
+      for (var i in myJson) {
+        newTableRow('userDeviceList',myJson[i].name, myJson[i].ip), myJson[i].mac;
       }
     }
   });
