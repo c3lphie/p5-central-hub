@@ -3,6 +3,16 @@ function refresh() {
   location.reload(true);
 }
 
+// Send event to api
+function NewEvent() {
+  const Http = new XMLHttpRequest();
+  const api = 'https://127.0.0.1/api/[HVAD END DEN HEDDER]';
+  Http.open("POST",api);
+  Http.send();
+}
+
+
+
 //--------------------
 //    Tabel Id'er:
 // - eventList
