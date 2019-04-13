@@ -3,23 +3,6 @@ function refresh() {
   location.reload(true);
 }
 
-document.addEventListener('DOMContentLoaded', HubInit, false);
-
-// Initialisering af ny event siden
-function EventInit(){
-  AddDeviceToSelect('http://127.0.0.1/api/getdevices.php','devicelist');
-  AddDeviceToSelect('http://127.0.0.1/api/getuserdevices.php','udevicelist');
-}
-
-// Initialisering af index
-function HubInit(){
-  GetDevices('http://10.0.0.1/api/getdevices.php');
-  GetEvents('http://127.0.0.1/api/getevents.php');
-  GetUserdevice('http://127.0.0.1/api/getuserdevices.php');
-  console.log("ok");
-}
-
-
 
 // Send event to api
 function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
