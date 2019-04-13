@@ -21,4 +21,6 @@ addEvent = document.getElementById("addevent");
 
  
 
-addEvent.onclick = NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, udevicelist[udevicelist.selectedIndex].value)
+addEvent.onclick = function(){
+    NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, udevicelist[udevicelist.selectedIndex].value)
+}
