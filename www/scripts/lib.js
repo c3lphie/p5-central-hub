@@ -6,9 +6,6 @@ function refresh() {
 
 // Send event to api
 function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
-  
-  
-  
   const Http = new XMLHttpRequest();
   const api = 'http://10.0.0.1/api/addevent.php?';
   Http.open("GET",api);
@@ -69,7 +66,6 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
 
 
 // Skaf devices
-// "localhost:80/api/getdevices.php"
 function GetDevices(urlJson) {
   fetch(urlJson)
   .then(function(response) {
