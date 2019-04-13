@@ -15,7 +15,7 @@ function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
   
   
   
-  const Http = new XMLHttpRequest();
+  // const Http = new XMLHttpRequest();
   const api = 'http://10.0.0.1/api/addevent.php?' + eventname + "&"+eventDesc+ "&"+deviceName+ "&"+uDeviceName;
  
   console.log(api);

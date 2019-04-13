@@ -4,15 +4,14 @@ let eventdesc;
 let udevicelist;
 let addEvent;
 
-document.addEventListener('DOMContentLoaded', EventInit, false);
-
 // Initialisering af ny event siden
-function EventInit(){
-    AddDeviceToSelect('http://10.0.0.1/api/getdevices.php','devicelist');
-    AddDeviceToSelect('http://10.0.0.1/api/getuserdevices.php','udevicelist');
-}
 
 document.onload = function(){
+    function EventInit(){
+        AddDeviceToSelect('http://10.0.0.1/api/getdevices.php','devicelist');
+        AddDeviceToSelect('http://10.0.0.1/api/getuserdevices.php','udevicelist');
+    }
+    
     devicelist = document.getElementById("devicelist");
     eventname = document.getElementById("eventname");
     eventdesc = document.getElementById("eventdesc");
