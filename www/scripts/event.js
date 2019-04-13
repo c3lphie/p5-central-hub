@@ -18,10 +18,7 @@ function EventInit(){
 
     
     addEvent.addEventListener("click", function(){
-        NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, "udevicelist[udevicelist.selectedIndex].value");
-    })
+        NewEvent(eventname.value, eventdesc.value, devicelist[devicelist.selectedIndex].value, udevicelist[udevicelist.selectedIndex].value);
+        window.location.replace("http://10.0.0.1/")
+    });
 }
-
-// addEvent.onclick = function(){
-//     NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, "udevicelist[udevicelist.selectedIndex].value");
-// }
