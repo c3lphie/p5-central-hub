@@ -19,8 +19,12 @@ document.onload = function(){
     udevicelist = document.getElementById("udevicelist");
     addEvent = document.getElementById("addevent"); 
 
-    addEvent.onclick = function(){
-        NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, "udevicelist[udevicelist.selectedIndex].value");
-    }
-
+    
 }
+document.getElementById("addevent").addEventListener("click", function(){
+    NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, "udevicelist[udevicelist.selectedIndex].value");
+})
+
+// addEvent.onclick = function(){
+//     NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, "udevicelist[udevicelist.selectedIndex].value");
+// }
