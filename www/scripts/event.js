@@ -18,7 +18,7 @@ function EventInit(){
 
     
     addEvent.addEventListener("click", function(){
-        NewEvent(eventname.innerText, eventdesc.innerText, "devicelist[devicelist.selectedIndex].value", "udevicelist[udevicelist.selectedIndex].value");
+        NewEvent(eventname.innerText, eventdesc.innerText, devicelist[devicelist.selectedIndex].value, "udevicelist[udevicelist.selectedIndex].value");
     })
 }
 
