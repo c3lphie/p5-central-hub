@@ -81,7 +81,10 @@ function GetDevices(urlJson) {
       console.log(myJson.error);
     } else {
       for (var i in myJson) {
-        newTableRow('deviceList',myJson[i].name, myJson[i].ip, myJson[i].type);
+        if(myJson[i].type === 0){
+          newTableRow('deviceList',myJson[i].name, myJson[i].ip, "WiFi-Tracker");
+
+        }
       }
     }
   });
