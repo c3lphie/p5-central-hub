@@ -3,14 +3,15 @@ function refresh() {
   location.reload(true);
 }
 
-
+// Initialisering af ny event siden
 function EventInit(){
   AddDeviceToSelect('http://127.0.0.1/api/getdevices.php','devicelist');
   AddDeviceToSelect('http://127.0.0.1/api/[HVAD END DEN HEDDER].php','udevicelist');
 }
 
+// Initialisering af index
 function HubInit(){
-  GetDevices('http://127.0.0.1/api/getdevices.php');
+  GetDevices('http://10.0.0.1/api/getdevices.php');
   GetEvents('http://127.0.0.1/api/getevents.php');
   GetUserdevice('http://127.0.0.1/api/getuserdevices.php');
 }
@@ -18,10 +19,13 @@ function HubInit(){
 
 
 // Send event to api
-function NewEvent() {
+function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
+  
+  
+  
   const Http = new XMLHttpRequest();
-  const api = 'https://127.0.0.1/api/[HVAD END DEN HEDDER]';
-  Http.open("POST",api);
+  const api = 'http://10.0.0.1/api/addevent.php?'+;
+  Http.open("GET",api);
   Http.send();
 }
 
