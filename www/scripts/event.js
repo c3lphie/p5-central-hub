@@ -2,7 +2,7 @@ let devicelist;
 let eventname;
 let eventdesc;
 let udevicelist;
-let addEvent;
+let addEvent = document.getElementById("addevent"); 
 
 document.addEventListener('DOMContentLoaded', EventInit, false);
 
@@ -14,7 +14,7 @@ function EventInit(){
 eventname = document.getElementById("eventname");
 eventdesc = document.getElementById("eventdesc");
 udevicelist = document.getElementById("udevicelist");
-addEvent = document.getElementById("addevent");    
+   
   }
 
 
