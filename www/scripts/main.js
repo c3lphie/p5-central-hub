@@ -3,12 +3,49 @@ function refresh() {
   location.reload(true);
 }
 
+
+function EventInit(){
+  AddDeviceToSelect('http://127.0.0.1/api/getdevices.php','devicelist');
+  AddDeviceToSelect('http://127.0.0.1/api/[HVAD END DEN HEDDER].php','udevicelist');
+}
+
+function HubInit(){
+  GetDevices('http://127.0.0.1/api/getdevices.php');
+  GetEvents('http://127.0.0.1/api/getdevices.php');
+  GetUserdevice('http://127.0.0.1/api/getdevices.php');
+}
+
+
+
 // Send event to api
 function NewEvent() {
   const Http = new XMLHttpRequest();
   const api = 'https://127.0.0.1/api/[HVAD END DEN HEDDER]';
   Http.open("POST",api);
   Http.send();
+}
+
+
+
+// Tilføj til listbox
+function AddDeviceToSelect(urlJson, selectId) {
+  fetch(urlJson)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    if (myJson.hasOwnProperty('error')) {
+      alert("An error has occured, check console for more information!");
+      console.log(myJson.error);
+    } else {
+      let select = document.getElementById(selectId);
+      let option = document.createElement('option');
+      for (var i in myJson) {
+        option.text = myJson[i].name;        
+        selectId.add(option);
+      }
+    }
+  });
 }
 
 
@@ -28,15 +65,15 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
   if (cell3Text == null) {
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
-    cell1.innerHTML = cell1Text;
-    cell2.innerHTML = cell2Text;
+    cell1.innerText = cell1Text;
+    cell2.innerText = cell2Text;
   } else {
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
-    cell1.innerHTML = cell1Text;
-    cell2.innerHTML = cell2Text;
-    cell3.innerHTML = cell3Text;
+    cell1.innerText = cell1Text;
+    cell2.innerText = cell2Text;
+    cell3.innerText = cell3Text;
   }
 }
 
@@ -54,7 +91,7 @@ function GetDevices(urlJson) {
       console.log(myJson.error);
     } else {
       for (var i in myJson) {
-        newTableRow('deviceList',myJson[i].name, myJson[i].ip,myJson[i].type);
+        newTableRow('deviceList',myJson[i].name, myJson[i].ip, myJson[i].type);
       }
     }
   });
@@ -90,7 +127,7 @@ function GetUserdevice(urlJson) {
       console.log(myJson.error);
     } else {
       for (var i in myJson) {
-        newTableRow('userDeviceList',myJson[i].name, myJson[i].ip), myJson[i].mac;
+        newTableRow('userDeviceList',myJson[i].name, myJson[i].ip, myJson[i].mac);
       }
     }
   });

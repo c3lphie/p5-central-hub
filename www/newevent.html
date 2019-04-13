@@ -3,15 +3,30 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Central hub</title>
+  <title>Central hub - Nyt event</title>
   <script src="scripts/main.js" charset="utf-8"></script>
   <style media="screen">
   </style>
 </head>
 
 <body>
-  <div class="main">
-    <h1>New event</h1>
+  <div class="main" onload="EventInit()">
+    <h1>Nyt event</h1>
+    <form action="/addevent.php">
+    Event navn: <br>
+    <input type="text" name="eventname" placeholder="Eksempel på navn"><br>
+    Event beskrivelse: <br>
+    <textarea name="eventdesc" cols="40" rows="10" placeholder="Eksempel på event beskrivelse"></textarea>
+    <br>
+    Sensorer og devices: <br>
+    <select name="devicelist" id="devicelist">
+    </select> <br>
+    Dine mobile enheder: <br>
+    <select name="udevicelist" id="udevicelist">
+    </select> <br>
+    <br><br>
+    <input type="submit" value="Tilføj">
+  </form>
   </div>
 </body>
 
