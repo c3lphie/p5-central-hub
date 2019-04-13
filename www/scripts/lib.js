@@ -6,6 +6,15 @@ function refresh() {
 
 // Send event to api
 function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
+  
+  console.log(eventName);
+  console.log(eventDesc);
+  console.log(deviceName);
+  console.log(uDeviceName);
+
+  
+  
+  
   const Http = new XMLHttpRequest();
   const api = 'http://10.0.0.1/api/addevent.php?';
   Http.open("GET",api);
