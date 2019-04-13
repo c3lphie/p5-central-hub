@@ -6,14 +6,14 @@ function refresh() {
 // Initialisering af ny event siden
 function EventInit(){
   AddDeviceToSelect('http://127.0.0.1/api/getdevices.php','devicelist');
-  AddDeviceToSelect('http://127.0.0.1/api/[HVAD END DEN HEDDER].php','udevicelist');
+  AddDeviceToSelect('http://127.0.0.1/api/getuserdevices.php','udevicelist');
 }
 
 // Initialisering af index
 function HubInit(){
   GetDevices('http://10.0.0.1/api/getdevices.php');
-  //GetEvents('http://127.0.0.1/api/getevents.php');
-  //GetUserdevice('http://127.0.0.1/api/getuserdevices.php');
+  GetEvents('http://127.0.0.1/api/getevents.php');
+  GetUserdevice('http://127.0.0.1/api/getuserdevices.php');
 }
 
 
@@ -46,7 +46,7 @@ function AddDeviceToSelect(urlJson, selectId) {
       let option = document.createElement('option');
       for (var i in myJson) {
         option.text = myJson[i].name;        
-        selectId.add(option);
+        select.add(option);
       }
     }
   });
