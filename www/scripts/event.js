@@ -20,7 +20,7 @@ document.onload = function(){
     addEvent = document.getElementById("addevent"); 
 
     
-    document.getElementById("addevent").addEventListener("click", function(){
+    addEvent.addEventListener("click", function(){
         NewEvent(eventname.innerText, eventdesc.innerText, "devicelist[devicelist.selectedIndex].value", "udevicelist[udevicelist.selectedIndex].value");
     })
 }
