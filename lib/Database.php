@@ -107,10 +107,10 @@ class Database
     /**
      * Gets a device.
      * Warning: This function does not check if the device exists first.
-     * @param $mac int
+     * @param $mac string
      * @return Device
      */
-    public function GetDevice(int $mac): Device
+    public function GetDevice(string $mac): Device
     {
         $statement = $this->_conn->prepare("SELECT Mac, Ip, Type, LastSeen, Name FROM Devices WHERE Mac=? LIMIT 1");
 

@@ -98,7 +98,7 @@ class Device
      */
     public function GetArray(): array
     {
-        return array('mac' => $this->GetMacHumanReadable(), 'ip' => $this->GetIpHumanReadable(), 'type' => $this->GetType(), 'lastSeen' => $this->GetLastSeenHumanReadable(), 'name' => $this->GetName());
+        return array('mac' => $this->GetMac(), 'ip' => $this->GetIp(), 'type' => $this->GetType(), 'lastSeen' => $this->GetLastSeenHumanReadable(), 'name' => $this->GetName());
     }
 
     /**
