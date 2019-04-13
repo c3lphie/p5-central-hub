@@ -4,25 +4,16 @@ function refresh() {
 }
 
 
-function EventInit(){
-  AddDeviceToSelect('http://127.0.0.1/api/getdevices.php','devicelist');
-  AddDeviceToSelect('http://127.0.0.1/api/[HVAD END DEN HEDDER].php','udevicelist');
-}
-
-function HubInit(){
-  GetDevices('http://127.0.0.1/api/getdevices.php');
-  GetEvents('http://127.0.0.1/api/getevents.php');
-  GetUserdevice('http://127.0.0.1/api/getuserdevices.php');
-}
-
-
-
 // Send event to api
-function NewEvent() {
-  const Http = new XMLHttpRequest();
-  const api = 'https://127.0.0.1/api/[HVAD END DEN HEDDER]';
-  Http.open("POST",api);
-  Http.send();
+function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
+ 
+  // const Http = new XMLHttpRequest();
+  const api = 'http://10.0.0.1/api/addevent.php?' + eventName + "&" + eventDesc + "&" + deviceName + "&"+ uDeviceName;
+ 
+  console.log(api);
+  
+  // Http.open("GET",api);
+  // Http.send();
 }
 
 
@@ -42,7 +33,7 @@ function AddDeviceToSelect(urlJson, selectId) {
       let option = document.createElement('option');
       for (var i in myJson) {
         option.text = myJson[i].name;        
-        selectId.add(option);
+        select.add(option);
       }
     }
   });
@@ -79,7 +70,6 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
 
 
 // Skaf devices
-// "localhost:80/api/getdevices.php"
 function GetDevices(urlJson) {
   fetch(urlJson)
   .then(function(response) {

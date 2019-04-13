@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>Central hub - Nyt event</title>
-  <script src="scripts/main.js" charset="utf-8"></script>
+  <script src="scripts/lib.js" charset="utf-8"></script>
+  <script src="scripts/event.js"></script>
   <style media="screen">
   </style>
 </head>
@@ -12,11 +13,11 @@
 <body>
   <div class="main" onload="EventInit()">
     <h1>Nyt event</h1>
-    <form action="/addevent.php">
+    <div>
       Event navn: <br>
-      <input type="text" name="eventname" placeholder="Eksempel på navn"><br>
+      <input type="text" name="eventname" placeholder="Eksempel på navn" id="eventname"><br>
       Event beskrivelse: <br>
-      <textarea name="eventdesc" cols="40" rows="10" placeholder="Eksempel på event beskrivelse"></textarea>
+      <textarea name="eventdesc" cols="40" rows="10" placeholder="Eksempel på event beskrivelse" id="eventname"></textarea>
       <br>
       Sensorer og devices: <br>
       <select name="devicelist" id="devicelist">
@@ -25,8 +26,8 @@
       <select name="udevicelist" id="udevicelist">
       </select> <br>
       <br><br>
-      <input type="submit" value="Tilføj">
-    </form>
+      <button id="addevent">Tilføj</button>
+    </div>
   </div>
 </body>
 
