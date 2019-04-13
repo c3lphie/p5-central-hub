@@ -101,7 +101,7 @@ class Database
 
         if (!$statement->execute()) Error("DeviceExists failed");
 
-        return $statement->fetch();
+        return $statement->fetch() != null;
     }
 
     /**
