@@ -68,7 +68,7 @@ class Database
         $statement->bind_param("ssiss", $target->GetMac(), $target->GetName());
 
 
-        if (!$statement->execute()) Error("AddDevice failed: " . $statement->error);
+        if (!$statement->execute()) Error("AddTarget failed: " . $statement->error);
     }
 
     /**
