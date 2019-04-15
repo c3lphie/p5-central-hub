@@ -65,7 +65,7 @@ class Database
 
         if ($statement == false) Error("Could not create statement");
 
-        $statement->bind_param("ssiss", $device->GetMac(), $device->GetName());
+        $statement->bind_param("ssiss", $target->GetMac(), $target->GetName());
 
 
         if (!$statement->execute()) Error("AddDevice failed: " . $statement->error);
