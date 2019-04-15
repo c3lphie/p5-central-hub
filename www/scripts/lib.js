@@ -81,6 +81,7 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
 // Skaf devices
 function JSONToTable(urlJson, tableId) {
   let arr = [];
+  let done = false;
 
   fetch(urlJson)
   .then(function(response) {
@@ -91,27 +92,41 @@ function JSONToTable(urlJson, tableId) {
       alert("An error has occured, check console for more information!");
       console.log(myJson.error);
     } else {
-      for (const i in myJson) {
+      for (var i in myJson) {
         arr.push(myJson[i]);
       }
     }
   });
-    
-  if(tableId === 'deviceList'){
-    for (var i in arr) {
-      if(arr[i].type === 0){
-        newTableRow('deviceList',arr[i].name, arr[i].ip, "WiFi-Tracker");
+  while(!done){
+    if(tableId === 'deviceList'){
+      for (var i in arr) {
+        if(arr[i].type === 0){
+          newTableRow('deviceList',arr[i].name, arr[i].ip, "WiFi-Tracker");
+        } else {
+          newTableRow('deviceList',arr[i].name, arr[i].ip, arr[i].type); 
+        }
+
+        if(i == arr.length -1){
+          done = false
+        }
       }
-    }
-  } else if(tableId === 'eventList') {
-    for (var i in arr) {
-      if(arr[i].type === 0){
-        newTableRow('eventList',arr[i].name, arr[i].description);
+    } else if(tableId === 'eventList') {
+      for (var i in arr) {
+        if(arr[i].type === 0){
+          newTableRow('eventList',arr[i].name, arr[i].description);
+        }
+
+        if(i == arr.length -1){
+          done = false
+        }
       }
-    }
-  } else if (tableId === 'userDeviceList'){
-    for (var i in arr) {
-      newTableRow('userDeviceList',arr[i].name, arr[i].ip, arr[i].mac);
+    } else if (tableId === 'userDeviceList'){
+      for (var i in arr) {
+        newTableRow('userDeviceList',arr[i].name, arr[i].ip, arr[i].mac);
+        if(i == arr.length -1){
+          done = false
+        }
+      }
     }
   }
 }
