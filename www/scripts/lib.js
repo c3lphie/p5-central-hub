@@ -8,7 +8,7 @@ function refresh() {
 function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
  
   // const Http = new XMLHttpRequest();
-  const api = 'http://10.0.0.1/api/addevent.php?' + eventName + "&" + eventDesc + "&" + deviceName + "&"+ uDeviceName;
+  const api = 'http://10.0.0.1/api/addevent.php?eventname=' + eventName + "&description=" + eventDesc + "&devicename=" + deviceName + "&userdevicename="+ uDeviceName;
  
   console.log(api);
   
@@ -70,7 +70,9 @@ function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
 
 
 // Skaf devices
-function GetDevices(urlJson) {
+function JSONToTable(urlJson, tableId) {
+  let arr = [];
+
   fetch(urlJson)
   .then(function(response) {
     return response.json();
@@ -80,48 +82,27 @@ function GetDevices(urlJson) {
       alert("An error has occured, check console for more information!");
       console.log(myJson.error);
     } else {
-      for (var i in myJson) {
-        if(myJson[i].type === 0){
-          newTableRow('deviceList',myJson[i].name, myJson[i].ip, "WiFi-Tracker");
-
-        }
+      for (const i in myJson) {
+        arr.push(myJson[i]);
       }
     }
   });
-}
-
-// Skaf Events
-function GetEvents(urlJson) {
-  fetch(urlJson)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    if (myJson.hasOwnProperty('error')) {
-      alert("An error has occured, check console for more information!");
-      console.log(myJson.error);
-    } else {
-      for (var i in myJson) {
-        newTableRow('eventList',myJson[i].name, myJson[i].ip);
+    
+  if(tableId === 'deviceList'){
+    for (var i in arr) {
+      if(arr[i].type === 0){
+        newTableRow('deviceList',arr[i].name, arr[i].ip, "WiFi-Tracker");
       }
     }
-  });
-}
-
-// Skaf userdevices
-function GetUserdevice(urlJson) {
-  fetch(urlJson)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    if (myJson.hasOwnProperty('error')) {
-      alert("An error has occured, check console for more information!");
-      console.log(myJson.error);
-    } else {
-      for (var i in myJson) {
-        newTableRow('userDeviceList',myJson[i].name, myJson[i].ip, myJson[i].mac);
+  } else if(tableId === 'eventList') {
+    for (var i in arr) {
+      if(arr[i].type === 0){
+        newTableRow('eventList',arr[i].name, arr[i].description);
       }
     }
-  });
+  } else if (tableId === 'userDeviceList'){
+    for (var i in arr) {
+      newTableRow('userDeviceList',arr[i].name, arr[i].ip, arr[i].mac);
+    }
+  }
 }
