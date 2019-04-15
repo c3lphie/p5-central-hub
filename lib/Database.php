@@ -65,7 +65,7 @@ class Database
 
         if ($statement == false) Error("Could not create statement");
 
-        $statement->bind_param("ssiss", $target->GetMac(), $target->GetName());
+        $statement->bind_param("ss", $target->GetMac(), $target->GetName());
 
 
         if (!$statement->execute()) Error("AddTarget failed: " . $statement->error);
@@ -95,7 +95,7 @@ class Database
     {
         $statement = $this->_conn->prepare("UPDATE Targets SET Name=? WHERE Mac=?");
 
-        $statement->bind_param("iissi", $target->GetName(), $target->GetMac());
+        $statement->bind_param("ss", $target->GetName(), $target->GetMac());
 
 
         if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
