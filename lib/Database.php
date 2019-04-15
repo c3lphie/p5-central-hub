@@ -145,7 +145,7 @@ class Database
     {
         $statement = $this->_conn->prepare("SELECT 1 FROM Targets WHERE Mac=? LIMIT 1");
 
-        $statement->bind_param("s", $mac);
+        $statement->bind_param("i", $mac);
 
         if (!$statement->execute()) Error("DeviceExists failed");
 
