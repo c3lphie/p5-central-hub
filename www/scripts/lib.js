@@ -20,15 +20,9 @@ function NewDevice(name,mac) {
 
   const api = 'http://10.0.0.1/api/addphone.php?name=' + name + "&mac=" + mac;
   const Http = new XMLHttpRequest();
- 
-  // console.log(api);
   
   Http.open("GET",api);
   Http.send();
-
-  Http.onreadystatechange=(e)=>{
-    console.log(Http.responseText);
-  }
 }
 
 
