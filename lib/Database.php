@@ -55,6 +55,23 @@ class Database
     }
 
     /**
+     * Adds a Target to the database.
+     * Warning: This function does not check for existing device.
+     * @param $target Target
+     */
+    public function AddTarget(Target $target): void
+    {
+        $statement = $this->_conn->prepare("INSERT INTO Targets (Mac, Name) VALUES (?, ?)");
+
+        if ($statement == false) Error("Could not create statement");
+
+        $statement->bind_param("ssiss", $device->GetMac(), $device->GetName());
+
+
+        if (!$statement->execute()) Error("AddDevice failed: " . $statement->error);
+    }
+
+    /**
      * Updates an existing Device.
      * Warning: This function does not check if the device is existing.
      * @param $device Device
@@ -64,6 +81,21 @@ class Database
         $statement = $this->_conn->prepare("UPDATE Devices SET Ip=?, Type=?, LastSeen=?, Name=? WHERE Mac=?");
 
         $statement->bind_param("iissi", $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName(), $device->GetMac());
+
+
+        if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
+    }
+
+    /**
+     * Updates an existing Device.
+     * Warning: This function does not check if the device is existing.
+     * @param $target Target
+     */
+    public function UpdateTarget(Target $target): void
+    {
+        $statement = $this->_conn->prepare("UPDATE Targets SET Name=? WHERE Mac=?");
+
+        $statement->bind_param("iissi", $target->GetName(), $target->GetMac());
 
 
         if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
@@ -96,6 +128,22 @@ class Database
     public function DeviceExists(string $mac): bool
     {
         $statement = $this->_conn->prepare("SELECT 1 FROM Devices WHERE Mac=? LIMIT 1");
+
+        $statement->bind_param("i", $mac);
+
+        if (!$statement->execute()) Error("DeviceExists failed");
+
+        return $statement->fetch() != null;
+    }
+
+    /**
+     * Checks if a device exists.
+     * @param $mac string
+     * @return bool
+     */
+    public function TargetExists(string $mac): bool
+    {
+        $statement = $this->_conn->prepare("SELECT 1 FROM Targets WHERE Mac=? LIMIT 1");
 
         $statement->bind_param("i", $mac);
 
