@@ -208,10 +208,28 @@ class Database
             if (!$datetime) Error("Could not convert datetime");
             array_push($devices, new Device($mac, $ip, $type, $datetime, $name));
         }
-
-
         return $devices;
+    }
 
+    /**
+     * Gets all targets as an array.
+     * @return array
+     */
+    public function GetTargets(): array
+    {
+        $statement = $this->_conn->prepare("SELECT Mac, Name FROM Targets");
+
+        if (!$statement->execute()) Error("GetTargets failed");
+
+        /** @var string $mac */
+        /** @var string $name */
+        $statement->bind_result($mac, $name);
+
+        $targets = array();
+        while ($statement->fetch()) {
+            array_push($targets, new Target($mac, $name));
+        }
+        return $targets;
     }
 
     /**
