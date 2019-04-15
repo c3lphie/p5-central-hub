@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../../lib/Database.php";
-require_once __DIR__ . "/../../lib/Device.php";
+require_once __DIR__ . "/../../lib/Target.php";
 
 $db = new Database();
 
