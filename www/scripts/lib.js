@@ -105,7 +105,7 @@ function JSONToTable(urlJson, tableId) {
         }
       } else if (tableId === 'userDeviceList'){
         for (var i in myJson) {
-          newTableRow('userDeviceList',myJson[i].name, myJson[i].ip, myJson[i].mac);
+          newTableRow('userDeviceList',myJson[i].name, myJson[i].mac);
         }
       }
     }
