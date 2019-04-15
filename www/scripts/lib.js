@@ -17,13 +17,15 @@ function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
 }
 
 function NewDevice(name,mac) {
-  const Http = new XMLHttpRequest();
+
   const api = 'http://10.0.0.1/api/addphone.php?name=' + name + "&mac=" + mac;
+  fetch("GET",api);
+  // const Http = new XMLHttpRequest();
  
-  console.log(api);
+  // console.log(api);
   
-  Http.open("GET",api);
-  Http.send();
+  // Http.open("GET",api);
+  // Http.send();
 }
 
 
