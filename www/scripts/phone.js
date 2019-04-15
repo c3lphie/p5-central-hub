@@ -7,7 +7,7 @@ function phoneInit(){
     let phoneMAC = document.getElementById('phonemac');
 
     addPhone.addEventListener("click", function(){
-        NewDevice(phoneName.value, phoneMAC.value.toUpperCase());
+        NewDevice(phoneName.value, phoneMAC.value);
         window.location.replace("http://10.0.0.1/");
     });
 }
