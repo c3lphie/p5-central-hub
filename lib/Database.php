@@ -257,7 +257,7 @@ class Database
      */
     public function TrackedInfoExists(string $macTarget): bool
     {
-        $statement = $this->_conn->prepare("SELECT 1 FROM `Scan db` WHERE Mac=? LIMIT 1");
+        $statement = $this->_conn->prepare("SELECT 1 FROM `Scan db` WHERE Mac=? AND MacTarget=? LIMIT 1");
 
         $statement->bind_param("s", $mac);
 
@@ -275,7 +275,7 @@ class Database
      */
     public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
     {
-        $statement = $this->_conn->prepare("UPDATE `Scan db` SET SignalStrength=?, LastSeen=? WHERE MacTarget=?, Mac=?");
+        $statement = $this->_conn->prepare("UPDATE `Scan db` SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
 
         $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMac(),$trackedInfo->GetMacTarget());
 
