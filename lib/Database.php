@@ -148,7 +148,7 @@ class Database
 
         $statement->bind_param("s", $mac);
 
-        if (!$statement->execute()) Error("DeviceExists failed");
+        if (!$statement->execute()) Error("TargetExists failed");
 
         return $statement->fetch() != null;
     }
@@ -258,11 +258,9 @@ class Database
      */
     public function TrackedInfoExists(string $macTarget, string $mac): bool
     {
-        $statement = $this->_conn->prepare("SELECT 1 FROM Scandb WHERE Mac=? AND MacTarget=? LIMIT 2");
+        $statement = $this->_conn->prepare("SELECT 1 FROM Scandb WHERE Mac=? LIMIT 1");
 
         $statement->bind_param("ss", $mac, $macTarget);
-
-        echo $this->_conn->error;
 
         if (!$statement->execute()) Error("TrackedInfoExists failed");
 
