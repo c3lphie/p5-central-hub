@@ -273,9 +273,9 @@ class Database
      */
     public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
     {
-        $statement = $this->_conn->prepare("UPDATE 'Scan db' SET Mac=?, SignalStrength=?, LastSeen=? WHERE MacTarget=?");
+        $statement = $this->_conn->prepare("UPDATE `Scan db` SET SignalStrength=?, LastSeen=? WHERE MacTarget=?");
 
-        $statement->bind_param("sis", $trackedInfo->GetMac(), $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"));
+        $statement->bind_param("is", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"));
 
 
         if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
