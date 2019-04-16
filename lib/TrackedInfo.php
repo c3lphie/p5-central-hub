@@ -84,7 +84,7 @@ class TrackedInfo
     }
 
     /**
-     * Gets the device as json.
+     * Gets the trackedinfo as json.
      * @return string
      */
     public function GetJson(): string
