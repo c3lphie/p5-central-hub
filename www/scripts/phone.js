@@ -8,6 +8,6 @@ function phoneInit(){
 
     addPhone.addEventListener("click", function(){
         NewDevice(phoneName.value, phoneMAC.value);
-        //window.location.replace("http://10.0.0.1/");
+        // window.location.replace("http://10.0.0.1/");
     });
 }
