@@ -259,6 +259,8 @@ class Database
     {
         $statement = $this->_conn->prepare("SELECT 1 FROM 'Scan db' WHERE MacTarget=? LIMIT 1");
 
+        error_log($this->_conn->error);
+
         $statement->bind_param("s", $macTarget);
 
         if (!$statement->execute()) Error("TrackedInfoExists failed");
