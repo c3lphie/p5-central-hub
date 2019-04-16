@@ -266,10 +266,9 @@ class Database
 
         if (!$statement->execute()) Error("TrackedInfoExists failed");
 
-        /**
-         * if ($statement->)*/
+        if ($statement->execute()>0) return true;
 
-        return $statement->fetch() != null;
+        //return $statement->fetch() != null;
     }
 
     /**
