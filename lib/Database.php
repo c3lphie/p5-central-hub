@@ -262,7 +262,7 @@ class Database
 
         $statement->bind_param("ss", $mac, $macTarget);
 
-        echo $statement->execute();
+        echo $statement->fetch();
 
         if (!$statement->execute()) Error("TrackedInfoExists failed");
 
