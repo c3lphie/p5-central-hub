@@ -240,7 +240,7 @@ class Database
      */
     public function AddTrackedInfo(TrackedInfo $trackedInfo): void 
     {
-        $statement = $this->_conn->prepare("INSERT INTO 'Scan db' (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
+        $statement = $this->_conn->prepare("INSERT INTO `Scan db` (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
 
         if ($statement == false) Error("Could not create statement");
 
