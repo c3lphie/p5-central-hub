@@ -240,7 +240,7 @@ class Database
      */
     public function AddTrackedInfo(TrackedInfo $trackedInfo): void 
     {
-        $statement = $this->_conn->prepare("INSERT INTO `Scan db` (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
+        $statement = $this->_conn->prepare("INSERT INTO Scandb (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
 
         if ($statement == false) Error("Could not create statement");
 
@@ -258,7 +258,7 @@ class Database
      */
     public function TrackedInfoExists(string $macTarget, string $mac): bool
     {
-        $statement = $this->_conn->prepare("SELECT 1 FROM `Scan db` WHERE Mac=? AND MacTarget=? LIMIT 1");
+        $statement = $this->_conn->prepare("SELECT 1 FROM Scandb WHERE Mac=? AND MacTarget=? LIMIT 1");
 
         $statement->bind_param("ss", $mac, $macTarget);
 
@@ -274,7 +274,7 @@ class Database
      */
     public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
     {
-        $statement = $this->_conn->prepare("UPDATE `Scan db` SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
+        $statement = $this->_conn->prepare("UPDATE Scandb SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
 
         $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
 
