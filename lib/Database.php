@@ -256,11 +256,11 @@ class Database
      * @param $macTarget string
      * @return bool
      */
-    public function TrackedInfoExists(string $macTarget, string $mac): bool
+    public function TrackedInfoExists(string $mac): bool
     {
         $statement = $this->_conn->prepare("SELECT 1 FROM Scandb WHERE Mac=? LIMIT 1");
 
-        $statement->bind_param("ss", $mac, $macTarget);
+        $statement->bind_param("ss", $mac);
 
         if (!$statement->execute()) Error("TrackedInfoExists failed");
 
