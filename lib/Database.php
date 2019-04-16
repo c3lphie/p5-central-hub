@@ -292,12 +292,12 @@ class Database
     {
         if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
-            error_log($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
+            error_log($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()));
             $this->UpdateTrackedInfo($trackedInfo);
         }
         else
         {
-            error_log($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
+            error_log($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()));
             $this->AddTrackedInfo($trackedInfo);
         }
     }
