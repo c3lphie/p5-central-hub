@@ -81,7 +81,7 @@ class Database
     {
         $statement = $this->_conn->prepare("UPDATE Devices SET Ip=?, Type=?, LastSeen=?, Name=? WHERE Mac=?");
 
-        $statement->bind_param("iisss", $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName(), $device->GetMac());
+        $statement->bind_param("sisss", $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName(), $device->GetMac());
 
 
         if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
