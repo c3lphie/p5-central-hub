@@ -252,14 +252,15 @@ class Database
 
     /**
      * Checks if a device exists.
+     * @param $mac string
      * @param $macTarget string
      * @return bool
      */
-    public function TrackedInfoExists(string $macTarget): bool
+    public function TrackedInfoExists(string $macTarget, string $mac): bool
     {
         $statement = $this->_conn->prepare("SELECT 1 FROM `Scan db` WHERE Mac=? AND MacTarget=? LIMIT 1");
 
-        $statement->bind_param("s", $mac);
+        $statement->bind_param("ss", $mac, $macTarget);
 
         error_log($this->_conn->error);
 
@@ -291,7 +292,7 @@ class Database
      */
     public function UpdateOrAddTrackedInfo(TrackedInfo $trackedInfo):void
     {
-        if ($this->TrackedInfoExists($trackedInfo->GetMacTarget()))
+        if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
             $this->UpdateTrackedInfo($trackedInfo);
         }
