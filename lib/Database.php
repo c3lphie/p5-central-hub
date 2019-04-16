@@ -262,8 +262,6 @@ class Database
 
         $statement->bind_param("ss", $mac, $macTarget);
 
-        error_log($statement->get_result());
-
         if (!$statement->execute()) Error("TrackedInfoExists failed");
 
         return $statement->fetch() != null;
@@ -294,12 +292,10 @@ class Database
     {
         if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
-            error_log($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget())? 'true':'false');
             $this->UpdateTrackedInfo($trackedInfo);
         }
         else
         {
-            error_log($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()) ? 'true':'false');
             $this->AddTrackedInfo($trackedInfo);
         }
     }
