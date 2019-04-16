@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/../../Database.php";
-require_once __DIR__ . "/../../TrackedInfo.php";
+require_once __DIR__ . "/../../lib/Database.php";
+require_once __DIR__ . "/../../lib/TrackedInfo.php";
 
 $db = new Database();
 
