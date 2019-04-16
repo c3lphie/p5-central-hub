@@ -289,7 +289,7 @@ class Database
      */
     public function UpdateOrAddTrackedInfo(TrackedInfo $trackedInfo):void
     {
-        if ($this->TrackedInfoExists($trackedInfo->GetMac()))
+        if ($this->TrackedInfoExists($trackedInfo->GetMacTarget()))
         {
             $this->UpdateTrackedInfo($trackedInfo);
         }
