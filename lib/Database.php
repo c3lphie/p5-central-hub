@@ -262,8 +262,6 @@ class Database
 
         $statement->bind_param("ss", $mac, $macTarget);
 
-        error_log($this->_conn->error);
-
         if (!$statement->execute()) Error("TrackedInfoExists failed");
 
         return $statement->fetch() != null;
@@ -278,7 +276,7 @@ class Database
     {
         $statement = $this->_conn->prepare("UPDATE `Scan db` SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
 
-        $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMac(),$trackedInfo->GetMacTarget());
+        $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
 
 
         if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
