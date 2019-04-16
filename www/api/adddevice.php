@@ -7,16 +7,16 @@ require_once __DIR__ . "/../../lib/IpUtils.php";
 
 $error = "";
 
-if (!isset($_GET["mac"])) $error = $error . "mac, ";
-if (!isset($_GET["ip"])) $error = $error . "ip, ";
-if (!isset($_GET["type"])) $error = $error . "type, ";
-if (!isset($_GET["name"])) $error = $error . "name, ";
 
 $mac = (string)$_GET["mac"];
 $ip = (string)$_GET["ip"];
 $type = (int)$_GET["type"];
 $name = (string)$_GET["name"];
 
+if (!isset($_GET["mac"])) $error = $error . "mac, ";
+if (!isset($_GET["ip"])) $error = $error . "ip, ";
+if (!isset($_GET["type"])) $error = $error . "type, ";
+if (!isset($_GET["name"])) $error = $error . "name, ";
 
 if ($error != "")
 {

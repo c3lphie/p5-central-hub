@@ -6,21 +6,21 @@ require_once __DIR__ . "/../../lib/MacUtils.php";
 
 $error = "";
 
-if (!isset($_GET["mac"])) $error = $error . "mac, ";
-if (!isset($_GET["mactarget"])) $error = $error . "mactarget, ";
-if (!isset($_GET["signalstrength"])) $error = $error . "signalstrength, ";
 
 $mac = (string)$_GET["mac"];
 $macTarget = (string)$_GET["mactarget"];
 $signal = (int)$_GET["signalstrength"]
 
+if (!isset($_GET["mac"])) $error = $error . "mac, ";
+if (!isset($_GET["mactarget"])) $error = $error . "mactarget, ";
+if (!isset($_GET["signalstrength"])) $error = $error . "signalstrength, ";
 
 if ($error != "")
 {
+    $error = substr($error, 0, -2);
+    $error = $error . " get parameter(s) not set";
+    die ('{"error": "' . $error . '"}');
 }
-$error = substr($error, 0, -2);
-$error = $error . " get parameter(s) not set";
-die ('{"error": "' . $error . '"}');
 
 
 

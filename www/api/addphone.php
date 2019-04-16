@@ -6,12 +6,12 @@ require_once __DIR__ . "/../../lib/MacUtils.php";
 
 $error = "";
 
-if (!isset($_GET["mac"])) $error = $error . "mac, ";
-if (!isset($_GET["name"])) $error = $error . "name, ";
 
 $mac = (string)$_GET["mac"];
 $name = (string)$_GET["name"];
 
+if (!isset($_GET["mac"])) $error = $error . "mac, ";
+if (!isset($_GET["name"])) $error = $error . "name, ";
 
 if ($error != "")
 {
