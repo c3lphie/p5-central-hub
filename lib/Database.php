@@ -5,6 +5,7 @@ require_once __DIR__ . "/Error.php";
 require_once __DIR__ . "/MacUtils.php";
 require_once __DIR__ . "/Device.php";
 require_once __DIR__ . "/TrackedDevice.php";
+require_once __DIR__ . "/TrackedInfo.php";
 
 
 class Database
@@ -233,31 +234,72 @@ class Database
     }
 
     /**
-     * @param $mac int
-     * @return TrackedDevice
+     * Adds a Target to the database.
+     * Warning: This function does not check for existing device.
+     * @param $trackedInfo TrackedInfo
      */
-    public function GetTrackedDevice(int $mac):TrackedDevice
+    public function AddTrackedInfo(TrackedInfo $trackedInfo): void 
     {
+        $statement = $this->_conn->prepare("INSERT INTO 'Scan db' (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
 
-        $statement = $this->_conn->prepare("SELECT Mac, LastSeen, Name FROM TrackedDevices WHERE Mac=? LIMIT 1");
+        if ($statement == false) Error("Could not create statement");
 
-        $statement->bind_param("i", $mac);
+        $statement->bind_param("ssis", $trackedInfo->GetMac(), $trackedInfo->GetMacTarget(), $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"));
 
-        if (!$statement->execute()) Error("GetTrackedDevice failed: " . $statement->error);
 
-        /** @var int $mac */
-        /** @var string $lastSeen */
-        /** @var string $name */
-        $statement->bind_result($mac, $lastSeen, $name);
-
-        if (!$statement->fetch()) Error("TrackedDevice does not exist");
-
-        $datetime = DateTime::createFromFormat("Y-m-d H:i:s", $lastSeen);
-
-        if (!$datetime) Error("Could not convert datetime");
-
-        return new TrackedDevice($mac, $datetime, $name);
+        if (!$statement->execute()) Error("AddTargetScan failed: " . $statement->error);
     }
+
+    /**
+     * Checks if a device exists.
+     * @param $macTarget string
+     * @return bool
+     */
+    public function TrackedInfoExists(string $macTarget): bool
+    {
+        $statement = $this->_conn->prepare("SELECT 1 FROM 'Scan db' WHERE MacTarget=? LIMIT 1");
+
+        $statement->bind_param("s", $macTarget);
+
+        if (!$statement->execute()) Error("TrackedInfoExists failed");
+
+        return $statement->fetch() != null;
+    }
+
+    /**
+     * Updates existing trackedinfo.
+     * Warning: This function does not check if the trackedinfo exists.
+     * @param $trackedInfo TrackedInfo
+     */
+    public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
+    {
+        $statement = $this->_conn->prepare("UPDATE 'Scan db' SET Mac=?, SignalStrength=?, LastSeen=? WHERE MacTarget=?");
+
+        $statement->bind_param("sis", $trackedInfo->GetMac(), $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"));
+
+
+        if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
+    }
+
+    /**
+     * A safe way to update or add a trackedinfo.
+     * If the trackedinfo exists it updates it.
+     * If it does not exist it adds it.
+     * @param $trackedInfo TrackedInfo
+     */
+    public function UpdateOrAddTrackedInfo(TrackedInfo $trackedInfo):void
+    {
+        if ($this->TrackedInfoExists($trackedInfo->GetMac()))
+        {
+            $this->UpdateTrackedInfo($trackedInfo);
+        }
+        else
+        {
+            $this->AddTrackedInfo($trackedInfo);
+        }
+    }
+
+
 }
 
 
