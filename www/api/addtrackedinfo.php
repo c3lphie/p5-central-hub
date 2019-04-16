@@ -36,4 +36,4 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
-$db->UpdateOrAddTarget($trackedInfo);
+$db->UpdateOrAddTrackedInfo($trackedInfo);
