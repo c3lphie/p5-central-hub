@@ -257,9 +257,9 @@ class Database
      */
     public function TrackedInfoExists(string $macTarget): bool
     {
-        $statement = $this->_conn->prepare("SELECT 1 FROM `Scan db` WHERE Mac=?, MacTarget=? LIMIT 1");
+        $statement = $this->_conn->prepare("SELECT 1 FROM `Scan db` WHERE Mac=? LIMIT 1");
 
-        $statement->bind_param("ss", $mac, $macTarget);
+        $statement->bind_param("s", $mac);
 
         error_log($this->_conn->error);
 
