@@ -17,10 +17,10 @@ $signal = (int)$_GET["signalstrength"]
 
 if ($error != "")
 {
-    $error = substr($error, 0, -2);
-    $error = $error . " get parameter(s) not set";
-    die ('{"error": "' . $error . '"}');
 }
+$error = substr($error, 0, -2);
+$error = $error . " get parameter(s) not set";
+die ('{"error": "' . $error . '"}');
 
 
 
@@ -28,6 +28,7 @@ $db = new Database();
 
 try {
     if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
+
     if (!MacUtils::Validate($macTarget)) die ('{"error": "mactarget is invalid"}');
 
     $trackedInfo = new TrackedInfo($mac, $macTarget, $signalStrength, new DateTime("now"));
@@ -35,6 +36,4 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
-if ($db->TrackedInfoExists($trackedInfo->GetMac())) die('{"error": "Device already exists"}');
-
-$db->AddTarget($trackedInfo);
+$db->UpdateOrzAddTarget($trackedInfo);
