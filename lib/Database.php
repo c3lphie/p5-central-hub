@@ -263,12 +263,16 @@ class Database
         if ($statement->bind_param("ss", $mac, $macTarget))
         {
             if (!$statement->execute()) Error("TrackedInfoExists failed");
-            if ($statement->fetch() == null)
+            if (mysqli_fetch_row($statement) != null)
             {
-            }
-            else
-            {
-                return $statement->fetch();
+                if (sizeof(mysqli_fetch_row()) > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         else
