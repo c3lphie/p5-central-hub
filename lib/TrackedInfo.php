@@ -23,7 +23,7 @@ class TrackedInfo
     function __construct(string $mac, string $macTarget, int $signalStrength, DateTime $lastSeen)
     {
         if (!MacUtils::Validate($mac)) Error("Mac address is invalid");
-        if (!MacUtils::Validate($macTarget)) Error("Mac address is invalid");
+        if (!MacUtils::Validate($macTarget)) Error("MacTarget address is invalid");
 
         $this->_mac = $mac;
         $this->_macTarget = $macTarget;

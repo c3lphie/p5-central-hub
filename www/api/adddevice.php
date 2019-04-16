@@ -37,7 +37,4 @@ try {
 } catch (Exception $e) {
     die('{"error": "Could not create DateTime"}');
 }
-
-if ($db->DeviceExists($device->GetMac())) die('{"error": "Device already exists"}');
-
-$db->AddDevice($device);
+$db->UpdateOrAddDevice($device);
