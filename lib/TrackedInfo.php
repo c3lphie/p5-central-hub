@@ -4,13 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . "/Error.php";
 require_once __DIR__ . "/MacUtils.php";
 
-abstract class DeviceType
-{
-    const WifiTracker = 0;
-    const Lock = 1;
-}
-
-class Device
+class TrackedInfo
 {
     protected $_mac; // 6 bytes, 48-bit
     protected $_macTarget; // 6 bytes, 48 bit
