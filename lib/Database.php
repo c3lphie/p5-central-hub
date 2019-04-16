@@ -263,12 +263,12 @@ class Database
         if ($statement->bind_param("ss", $mac, $macTarget))
         {
             if (!$statement->execute()) Error("TrackedInfoExists failed");
+            return $statement->fetch();
         } else
         {
             Error("TrackedInfoExists failed");
         }
 
-        return $statement->fetch();
 
     }
 
