@@ -31,7 +31,7 @@ try {
 
     if (!MacUtils::Validate($macTarget)) die ('{"error": "mactarget is invalid"}');
 
-    $trackedInfo = new TrackedInfo($mac, $macTarget, $signalStrength, new DateTime("now"));
+    $trackedInfo = new TrackedInfo($mac, $macTarget, $signal, new DateTime("now"));
 } catch (Exception $e) {
     die('{"error": "Could not create DateTime"}');
 }
