@@ -13,7 +13,7 @@ $_signal = (string) $_GET["signalstrength"];
 
 if (is_numeric($_signal))
 {
-    $signal = to_int($_signal);
+    $signal = (int)$_signal;
 }
 else
 {
