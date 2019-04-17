@@ -41,7 +41,8 @@ $oldLastSeen = $db->GetOldLastSeen($trackedInfo);
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
     echo $trackedInfo->GetLastSeen()->diff($oldLastSeen)->format();
-    if ($trackedInfo->GetLastSeen()->diff($oldLastSeen) > date_create_from_format("i","1")){
+    if ($trackedInfo->GetLastSeen()->diff($oldLastSeen) > new DateTime(date_create_from_format("i","1")))
+    {
         echo "wuhu";
     }
     else
