@@ -283,8 +283,6 @@ class Database
 
         $statement->bind_result($oldLastSeen);
 
-        $statement->free_result();
-
         return $oldLastSeen;
     }
 
