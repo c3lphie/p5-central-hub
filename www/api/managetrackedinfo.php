@@ -38,5 +38,5 @@ try {
 
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
-    echo "test";
+
 }

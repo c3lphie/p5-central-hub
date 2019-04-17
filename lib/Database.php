@@ -271,15 +271,24 @@ class Database
      * Updates existing trackedinfo.
      * Warning: This function does not check if the trackedinfo exists.
      * @param $trackedInfo TrackedInfo
+     * @return DateTime
      */
-    public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
+    public function UpdateTrackedInfo(TrackedInfo $trackedInfo): DateTime
     {
-        $statement = $this->_conn->prepare("UPDATE TrackedInfo SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
+        $statement = $this->_conn->prepare("SELECT LastSeen FROM TrackedInfo WHERE Mac=? AND MacTarget=?");
 
-        $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
+        $statement->bind_param("ss", $trackedInfo->GetMac(), $trackedInfo->GetMacTarget());
+
+        $oldLastSeen = $statement->fetch();
+
+        $statement1 = $this->_conn->prepare("UPDATE TrackedInfo SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
+
+        $statement1->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
 
 
-        if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
+        if (!$statement1->execute()) Error("UpdateDevice failed: " . $statement->error);
+
+        return $oldLastSeen;
     }
 
     /**
@@ -294,6 +303,7 @@ class Database
         if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
             $this->UpdateTrackedInfo($trackedInfo);
+            echo $this->UpdateTrackedInfo($trackedInfo);
             return "UPDATED";
         }
         else
