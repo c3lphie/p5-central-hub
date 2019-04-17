@@ -36,4 +36,7 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
-$db->UpdateOrAddTrackedInfo($trackedInfo);
+if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
+{
+    echo "test";
+}

@@ -287,16 +287,19 @@ class Database
      * If the trackedinfo exists it updates it.
      * If it does not exist it adds it.
      * @param $trackedInfo TrackedInfo
+     * @return string
      */
-    public function UpdateOrAddTrackedInfo(TrackedInfo $trackedInfo):void
+    public function UpdateOrAddTrackedInfo(TrackedInfo $trackedInfo):string
     {
         if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
             $this->UpdateTrackedInfo($trackedInfo);
+            return "UPDATED";
         }
         else
         {
             $this->AddTrackedInfo($trackedInfo);
+            return "ADDED";
         }
     }
 
