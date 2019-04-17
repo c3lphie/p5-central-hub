@@ -279,8 +279,6 @@ class Database
 
         $statement->execute();
 
-        $statement->store_result();
-
         $statement->bind_result($oldLastSeen);
 
         return $oldLastSeen;
