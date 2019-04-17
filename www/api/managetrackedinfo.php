@@ -9,7 +9,6 @@ $error = "";
 
 $mac = strtoupper((string)$_GET["mac"]);
 $macTarget = strtoupper((string)$_GET["mactarget"]);
-$_GET["signalstrength"];
 
 if (is_int($_GET["signalstrength"])) $signal = (int) $_GET["signalstrength"];
 
