@@ -3,12 +3,13 @@ function refresh() {
   location.reload(true);
 }
 
+let ip = "127.0.0.1";
 
 // Send event to api
 function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
  
   // const Http = new XMLHttpRequest();
-  const api = 'http://10.0.0.1/api/addevent.php?eventname=' + eventName + "&description=" + eventDesc + "&devicename=" + deviceName + "&userdevicename="+ uDeviceName;
+  const api = 'http://'+ip+'/api/addevent.php?eventname=' + eventName + "&description=" + eventDesc + "&devicename=" + deviceName + "&userdevicename="+ uDeviceName;
  
   console.log(api);
   
@@ -18,7 +19,7 @@ function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
 
 function NewDevice(name,mac) {
 
-  const api = 'http://10.0.0.1/api/addphone.php?name=' + name + "&mac=" + mac;
+  const api = 'http://'+ip+'/api/addphone.php?name=' + name + "&mac=" + mac;
   const Http = new XMLHttpRequest();
   
   Http.open("GET",api);
