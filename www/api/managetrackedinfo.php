@@ -36,7 +36,11 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
+echo $oldLastSeen = $db->GetOldLastSeen($trackedInfo);
+
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
+    if ($oldLastSeen - $trackedInfo->GetLastSeen() ){
 
+    }
 }

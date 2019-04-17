@@ -271,7 +271,7 @@ class Database
      * @param TrackedInfo $trackedInfo
      * @return DateTime
      */
-    public function GetOldLastSeen (TrackedInfo $trackedInfo): string
+    public function GetOldLastSeen (TrackedInfo $trackedInfo): DateTime
     {
         $statement = $this->_conn->prepare("SELECT LastSeen FROM TrackedInfo WHERE Mac=? AND MacTarget=?");
 
@@ -282,7 +282,7 @@ class Database
         $statement->bind_result($oldLastSeen);
         while ($statement->fetch())
         {
-            return $oldLastSeen;
+            return date_create_from_format("Y-m-d H:i:s",$oldLastSeen);
         }
     }
 
@@ -313,7 +313,6 @@ class Database
     {
         if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
-            echo $this->GetOldLastSeen($trackedInfo);
             $this->UpdateTrackedInfo($trackedInfo);
             return "UPDATED";
         }
