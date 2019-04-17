@@ -41,7 +41,7 @@ $oldLastSeen = $db->GetOldLastSeen($trackedInfo);
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
     echo $trackedInfo->GetLastSeen() - $oldLastSeen;
-    if ($oldLastSeen->diff(new DateTime("now"))  > 1){
+    if ($oldLastSeen->diff(new DateTime("now"))  > 5){
         echo "wuhu";
     }
     else
