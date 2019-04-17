@@ -41,12 +41,12 @@ $newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
 
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
-    if ($newLastSeen - $oldLastSeen > 10)
+    if ($newLastSeen - $oldLastSeen > 60)
     {
-        echo "wuhu";
+        echo "Der er gået mere end 1 minut";
     }
     else
     {
-        echo "lol";
+        echo "Der er gået mindre end 1 minut";
     }
 }
