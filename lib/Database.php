@@ -47,7 +47,9 @@ class Database
     {
         $statement = $this->_conn->prepare("INSERT INTO Devices (Mac, Ip, Type, LastSeen, Name) VALUES (?, ?, ?, ?, ?)");
 
-        if ($statement == false) Error($statement->error);
+        if ($statement == false) Error("Could not create statement");
+
+        echo $statement->error;
 
 
         $statement->bind_param("ssiss", $device->GetMac(), $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName());
