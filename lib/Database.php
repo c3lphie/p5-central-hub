@@ -323,6 +323,56 @@ class Database
         }
     }
 
+    /**
+     * Gets the signalstrength from trackedinfo
+     * @param $trackedInfo TrackedInfo
+     * @return int
+     */
+    public function GetSignalStrength(TrackedInfo $trackedInfo):int
+    {
+        $statement = $this->_conn->prepare("SELECT SignalStrength FROM TrackedInfo WHERE Mac=? AND MacTarget=?");
+
+        $statement->bind_param("ss", $trackedInfo->GetMac(), $trackedInfo->GetMacTarget());
+
+        $statement->execute();
+
+        $statement->bind_result($strength);
+        while ($statement->fetch())
+        {
+            return $strength;
+        }
+    }
+
+    /**
+     * @param $mac
+     * @return string
+     */
+    public function GetTypeFromDB($mac):string
+    {
+        $statement = $this->_conn->prepare("SELECT Type FROM Devices WHERE Mac=?");
+
+        $statement->bind_param("s", $mac);
+
+        $statement->execute();
+
+        $statement->bind_result($type);
+
+        while ($statement->fetch())
+        {
+            if ($type == 0)
+            {
+                return "WIFI_TRACKER";
+            }
+            elseif ($type == 1)
+            {
+                return "WIFI_LOCK";
+            }
+            elseif ($type == 2)
+            {
+                return "WIFI_LIGHT";
+            }
+        }
+    }
 
 }
 

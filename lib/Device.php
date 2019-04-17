@@ -9,6 +9,7 @@ abstract class DeviceType
 {
     const WifiTracker = 0;
     const Lock = 1;
+    const Light = 2;
 }
 
 class Device

@@ -7,8 +7,8 @@ require_once __DIR__ . "/../../lib/MacUtils.php";
 $error = "";
 
 
-$mac = (string)$_GET["mac"];
-$macTarget = (string)$_GET["mactarget"];
+$mac = strtoupper((string)$_GET["mac"]);
+$macTarget = strtoupper((string)$_GET["mactarget"]);
 $signal = (int)$_GET["signalstrength"];
 
 if (!isset($_GET["mac"])) $error = $error . "mac, ";
@@ -22,7 +22,7 @@ if ($error != "")
     die ('{"error": "' . $error . '"}');
 }
 
-
+echo $mac;
 
 $db = new Database();
 
@@ -43,10 +43,16 @@ if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
     if ($newLastSeen - $oldLastSeen > 60)
     {
-        echo "Der er gået mere end 1 minut";
+        /**
+         * Run this part if there has gone MORE than a minute
+         */
+
     }
     else
     {
-        echo "Der er gået mindre end 1 minut";
+        /**
+         * Run this part if there has gone LESS than a minute
+         */
+
     }
 }
