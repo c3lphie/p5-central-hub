@@ -42,7 +42,11 @@ echo $oldLastSeen->diff(new DateTime("now"))->format("%i");
 
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
-    if ($oldLastSeen->diff($trackedInfo)){
-
+    if ($oldLastSeen->diff(new DateTime("now"))>1*60){
+        echo "wuhu";
+    }
+    else
+    {
+        echo "lol";
     }
 }
