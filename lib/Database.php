@@ -240,7 +240,7 @@ class Database
      */
     public function AddTrackedInfo(TrackedInfo $trackedInfo): void 
     {
-        $statement = $this->_conn->prepare("INSERT INTO Scandb (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
+        $statement = $this->_conn->prepare("INSERT INTO TrackedInfo (Mac, MacTarget, SignalStrength, LastSeen) VALUES (?, ?, ?, ?)");
 
         if ($statement == false) Error("Could not create statement");
 
@@ -256,31 +256,15 @@ class Database
      * @param $macTarget string
      * @return bool
      */
-    public function TrackedInfoExists(string $macTarget, string $mac): bool
+    public function TrackedInfoExists(string $mac, string $macTarget): bool
     {
-        $statement = $this->_conn->prepare("SELECT 1 FROM Scandb WHERE Mac=? AND MacTarget=? LIMIT 1");
+        $statement = $this->_conn->prepare("SELECT 1 FROM TrackedInfo WHERE Mac=? AND MacTarget=? LIMIT 1");
 
-        if ($statement->bind_param("ss", $mac, $macTarget))
-        {
-            if (!$statement->execute()) Error("TrackedInfoExists failed");
-            if (mysqli_fetch_row($statement) != null)
-            {
-                if (sizeof(mysqli_fetch_row()) > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        else
-        {
-            Error("TrackedInfoExists failed");
-        }
+        $statement->bind_param("ss", $mac, $macTarget);
 
+        if (!$statement->execute()) Error("TrackedInfoExists failed");
 
+        return $statement->fetch() != null;
     }
 
     /**
@@ -290,7 +274,7 @@ class Database
      */
     public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
     {
-        $statement = $this->_conn->prepare("UPDATE Scandb SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
+        $statement = $this->_conn->prepare("UPDATE TrackedInfo SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
 
         $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
 
@@ -306,7 +290,7 @@ class Database
      */
     public function UpdateOrAddTrackedInfo(TrackedInfo $trackedInfo):void
     {
-        if ($this->TrackedInfoExists($trackedInfo->GetMacTarget(), $trackedInfo->GetMac()))
+        if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
             $this->UpdateTrackedInfo($trackedInfo);
         }
