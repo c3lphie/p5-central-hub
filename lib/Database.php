@@ -268,12 +268,10 @@ class Database
     }
 
     /**
-     * Updates existing trackedinfo.
-     * Warning: This function does not check if the trackedinfo exists.
-     * @param $trackedInfo TrackedInfo
+     * @param TrackedInfo $trackedInfo
      * @return DateTime
      */
-    public function UpdateTrackedInfo(TrackedInfo $trackedInfo): DateTime
+    public function GetOldLastSeen (TrackedInfo $trackedInfo): DateTime
     {
         $statement = $this->_conn->prepare("SELECT LastSeen FROM TrackedInfo WHERE Mac=? AND MacTarget=?");
 
@@ -281,14 +279,25 @@ class Database
 
         $statement->bind_result($oldLastSeen);
 
-        $statement1 = $this->_conn->prepare("UPDATE TrackedInfo SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
-
-        $statement1->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
-
-
-        if (!$statement1->execute()) Error("UpdateDevice failed: " . $statement->error);
+        $statement->fetch();
 
         return $oldLastSeen;
+    }
+
+    /**
+     * Updates existing trackedinfo.
+     * Warning: This function does not check if the trackedinfo exists.
+     * @param $trackedInfo TrackedInfo
+     * @return DateTime
+     */
+    public function UpdateTrackedInfo(TrackedInfo $trackedInfo): void
+    {
+        $statement = $this->_conn->prepare("UPDATE TrackedInfo SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
+
+        $statement->bind_param("isss", $trackedInfo->GetSignal(), $trackedInfo->GetLastSeen()->format("Y-m-d H:i:s"), $trackedInfo->GetMacTarget(),$trackedInfo->GetMac());
+
+
+        if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
     }
 
     /**
@@ -302,8 +311,8 @@ class Database
     {
         if ($this->TrackedInfoExists($trackedInfo->GetMac(), $trackedInfo->GetMacTarget()))
         {
+            echo $this->GetOldLastSeen($trackedInfo);
             $this->UpdateTrackedInfo($trackedInfo);
-            echo $this->UpdateTrackedInfo($trackedInfo);
             return "UPDATED";
         }
         else
