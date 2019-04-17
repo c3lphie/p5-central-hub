@@ -271,7 +271,7 @@ class Database
      * @param TrackedInfo $trackedInfo
      * @return DateTime
      */
-    public function GetOldLastSeen (TrackedInfo $trackedInfo): string
+    public function GetOldLastSeen (TrackedInfo $trackedInfo): DATETIME
     {
         $statement = $this->_conn->prepare("SELECT LastSeen FROM TrackedInfo WHERE Mac=? AND MacTarget=?");
 
