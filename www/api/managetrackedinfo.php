@@ -36,12 +36,12 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
-$oldLastSeen = $db->GetOldLastSeen($trackedInfo);
+$oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
+$newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
 
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
-    echo $trackedInfo->GetLastSeen()->diff($oldLastSeen)->format();
-    if ($trackedInfo->GetLastSeen()->diff($oldLastSeen) > new DateTime(date_create_from_format("i","1")))
+    if ($newLastSeen - $oldLastSeen > 10)
     {
         echo "wuhu";
     }
