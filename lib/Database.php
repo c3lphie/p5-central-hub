@@ -279,7 +279,7 @@ class Database
 
         $statement->bind_param("ss", $trackedInfo->GetMac(), $trackedInfo->GetMacTarget());
 
-        $oldLastSeen = $statement->fetch();
+        $statement->bind_result($oldLastSeen);
 
         $statement1 = $this->_conn->prepare("UPDATE TrackedInfo SET SignalStrength=?, LastSeen=? WHERE MacTarget=? AND Mac=?");
 
