@@ -22,8 +22,6 @@ if ($error != "")
     die ('{"error": "' . $error . '"}');
 }
 
-echo $mac;
-
 $db = new Database();
 
 try {

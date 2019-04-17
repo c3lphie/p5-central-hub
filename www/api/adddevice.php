@@ -8,7 +8,7 @@ require_once __DIR__ . "/../../lib/IpUtils.php";
 $error = "";
 
 
-$mac = (string)$_GET["mac"];
+$mac = strtoupper((string)$_GET["mac"]);
 $ip = (string)$_GET["ip"];
 $type = (int)$_GET["type"];
 $name = (string)$_GET["name"];

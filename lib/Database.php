@@ -213,6 +213,48 @@ class Database
     }
 
     /**
+     * @param $mac string
+     * @return bool
+     */
+    public function GetDeviceState($mac):int
+    {
+        $statement = $this->_conn->prepare("SELECT State FROM Devices WHERE Mac=?");
+
+        $statement->bind_param("s", $mac);
+
+        $statement->execute();
+
+        $statement->bind_result($state);
+        while ($statement->fetch())
+        {
+            return $state;
+        }
+    }
+
+    /**
+     * @param $mac string
+     * @param $state bool
+     */
+    public function SetState($mac, $state):void
+    {
+        $statement = $this->_conn->prepare("UPDATE Devices SET State=? WHERE Mac=?");
+
+        if ($state)
+        {
+            $_state = 1;
+        }
+        else
+        {
+            $_state = 0;
+        }
+
+        $statement->bind_param("is", $_state, $mac);
+
+
+        if (!$statement->execute()) Error("SetState failed: " . $statement->error);
+    }
+
+    /**
      * Gets all targets as an array.
      * @return array
      */
