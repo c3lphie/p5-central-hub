@@ -9,5 +9,11 @@ function HubInit(){
   // }, 5000); 
   JSONToTable('http://'+ip+'/api/getdevices.php','deviceList');
   JSONToTable('http://'+ip+'/api/gettargets.php','userDeviceList');
-    
+
+  let newudev = document.getElementById("newudev");
+
+  newudev.addEventListener("click", function(){
+    window.location.replace("http://"+ip+"/newphone.html");
+  });
+
 }
