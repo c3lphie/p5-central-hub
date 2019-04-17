@@ -277,9 +277,13 @@ class Database
 
         $statement->bind_param("ss", $trackedInfo->GetMac(), $trackedInfo->GetMacTarget());
 
+        $statement->execute();
+
+        $statement->store_result();
+
         $statement->bind_result($oldLastSeen);
 
-        $statement->fetch();
+        $statement->free_result();
 
         return $oldLastSeen;
     }
