@@ -38,7 +38,7 @@ try {
 
 $oldLastSeen = $db->GetOldLastSeen($trackedInfo);
 
-echo $oldLastSeen->diff(new DateTime("now"))->format("%i");
+echo $oldLastSeen->diff(new DateTime("now"));
 
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
