@@ -49,7 +49,6 @@ class Database
 
         if ($statement == false) Error("Could not create statement");
 
-
         $statement->bind_param("ssiss", $device->GetMac(), $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName());
 
 
