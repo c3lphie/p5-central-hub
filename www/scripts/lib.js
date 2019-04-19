@@ -24,6 +24,10 @@ function NewDevice(name,mac) {
   
   Http.open("GET", api);
   Http.send();
+  Http.onreadystatechange =(e)=>{
+    console.log(api);
+    console.log(Http.response);
+  }
 }
 
 
