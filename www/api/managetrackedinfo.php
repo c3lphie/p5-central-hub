@@ -81,14 +81,11 @@ foreach ($targets as $target)
 
             if($db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[1],$trackedInfo->GetMacTarget()) && $db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[2],$trackedInfo->GetMacTarget()))
             {
-                if ($db->GetDeviceState($lightDev->GetMac()) == 0)
-                {
-                    $db->SetState($lightDev->GetMac(), true);
-                }
-                elseif ($db->GetDeviceState($lightDev->GetMac()) == 1)
-                {
-                    $db->SetState($lightDev->GetMac(), false);
-                }
+                $db->SetState($lightDev->GetMac(), true);
+            }
+            else
+            {
+                $db->SetState($lightDev->GetMac(), false);
             }
         }
     }
