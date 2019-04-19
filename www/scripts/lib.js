@@ -40,7 +40,7 @@ function AddDeviceToSelect(urlJson, selectId) {
     } else {
       let select = document.getElementById(selectId);
       let option = document.createElement('option');
-      for (var i in myJson) {
+      for (let i in myJson) {
         option.text = myJson[i].name;        
         select.add(option);
       }
@@ -59,18 +59,18 @@ function AddDeviceToSelect(urlJson, selectId) {
 
 // Ny tabelrække
 function newTableRow(tableId, cell1Text, cell2Text, cell3Text) {
-  var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
-  var row = table.insertRow(1);
+  let table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+  let row = table.insertRow(1);
 
   if (cell3Text == null) {
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
     cell1.innerText = cell1Text;
     cell2.innerText = cell2Text;
   } else {
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
+    let cell1 = row.insertCell(0);
+    let cell2 = row.insertCell(1);
+    let cell3 = row.insertCell(2);
     cell1.innerText = cell1Text;
     cell2.innerText = cell2Text;
     cell3.innerText = cell3Text;
@@ -90,21 +90,24 @@ function JSONToTable(urlJson, tableId) {
       console.log(myJson.error);
     } else {
       if(tableId === 'deviceList'){
-        for (var i in myJson) {
+        for (let i in myJson) {
           if(myJson[i].type === 0){
             newTableRow('deviceList',myJson[i].name, myJson[i].ip, "WiFi-Tracker");
-          } else {
-            newTableRow('deviceList',myJson[i].name, myJson[i].ip, myJson[i].type); 
+          } else if(myJson[i].type === 1){
+            newTableRow('deviceList',myJson[i].name, myJson[i].ip, "Wifi-Lås");
+          } else if(myJson[i].type === 2){
+              newTableRow('deviceList',myJson[i].name, myJson[i].ip, "Wifi-Lys");
           }
+
         }
       } else if(tableId === 'eventList') {
-        for (var i in myJson) {
+        for (let i in myJson) {
           if(myJson[i].type === 0){
             newTableRow('eventList',myJson[i].name, myJson[i].description);
           }
         }
       } else if (tableId === 'userDeviceList'){
-        for (var i in myJson) {
+        for (let i in myJson) {
           newTableRow('userDeviceList',myJson[i].name, myJson[i].mac);
         }
       }
