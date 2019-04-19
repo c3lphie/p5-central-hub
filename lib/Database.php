@@ -79,9 +79,9 @@ class Database
      */
     public function UpdateDevice(Device $device): void
     {
-        $statement = $this->_conn->prepare("UPDATE Devices SET Ip=?, Type=?, LastSeen=?, Name=? WHERE Mac=?");
+        $statement = $this->_conn->prepare("UPDATE Devices SET Ip=?, Type=?, LastSeen=? WHERE Mac=?");
 
-        $statement->bind_param("sisss", $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetName(), $device->GetMac());
+        $statement->bind_param("siss", $device->GetIp(), $device->GetType(), $device->GetLastSeen()->format("Y-m-d H:i:s"), $device->GetMac());
 
 
         if (!$statement->execute()) Error("UpdateDevice failed: " . $statement->error);
