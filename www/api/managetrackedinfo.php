@@ -57,14 +57,12 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
-$oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
-$newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
 
-$db->AddTrackedInfo($trackedInfo);
-die();
 
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
+    $oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
+    $newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
     if ($newLastSeen - $oldLastSeen < 60)
     {
         /**
