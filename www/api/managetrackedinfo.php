@@ -6,6 +6,7 @@ require_once __DIR__ . "/../../lib/Device.php";
 require_once __DIR__ . "/../../lib/MacUtils.php";
 
 $error = "";
+$db = new Database();
 
 foreach ($db->GetDevices() as $device)
 {
@@ -44,7 +45,7 @@ if ($error != "")
     die ('{"error": "' . $error . '"}');
 }
 
-$db = new Database();
+
 
 try {
     if (!MacUtils::Validate($mac)) die ('{"error": "mac is invalid"}');
