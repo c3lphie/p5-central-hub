@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../../lib/Database.php";
 require_once __DIR__ . "/../../lib/TrackedInfo.php";
 require_once __DIR__ . "/../../lib/Device.php";
+require_once __DIR__ . "/../../lib/Target.php";
 require_once __DIR__ . "/../../lib/MacUtils.php";
 
 $error = "";
@@ -18,6 +19,12 @@ foreach ($db->GetDevices() as $device)
     {
         $lockDev = $device;
     }
+}
+
+$targets = array();
+foreach ($db->GetTargets() as $target)
+{
+    array_push($targets, $target);
 }
 
 $mac = strtoupper((string)$_GET["mac"]);
@@ -57,43 +64,47 @@ try {
     die('{"error": "Could not create DateTime"}');
 }
 
-
-
-if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
+foreach ($targets as $target)
 {
-    $oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
-    $newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
-    if ($newLastSeen - $oldLastSeen < 60)
+    if ($target->GetMac() == $trackedInfo->GetMacTarget())
     {
-        /**
-         * Run this part if there has gone LESS than a minute
-         */
-        if ($trackedInfo->GetSignal() < 20 && $db->GetDeviceState($lightDev->GetMac()) == 0)
+        if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
         {
-            $db->SetState($lightDev->GetMac(), true);
+            $oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
+            $newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
+            if ($newLastSeen - $oldLastSeen < 60)
+            {
+                /**
+                 * Run this part if there has gone LESS than a minute
+                 */
+                if ($trackedInfo->GetSignal() < 20 && $db->GetDeviceState($lightDev->GetMac()) == 0)
+                {
+                    $db->SetState($lightDev->GetMac(), true);
+                }
+                elseif ($trackedInfo->GetSignal() > 20 && $db->GetDeviceState($lightDev->GetMac()) == 1)
+                {
+                    $db->SetState($lightDev->GetMac(), false);
+                }
+
+                if ($trackedInfo->GetSignal() < 40 && $db->GetDeviceState($lockDev->GetMac()) == 0)
+                {
+                    $db->SetState($lockDev->GetMac(), true);
+                }
+                elseif ($trackedInfo->GetSignal() > 40 && $db->GetDeviceState($lockDev->GetMac()) == 1)
+                {
+                    $db->SetState($lockDev->GetMac(), false);
+                }
+
+
+            }
+            else
+            {
+                /**
+                 * Run this part if there has gone MORE than a minute
+                 */
+
+
+            }
         }
-        elseif ($trackedInfo->GetSignal() > 20 && $db->GetDeviceState($lightDev->GetMac()) == 1)
-        {
-            $db->SetState($lightDev->GetMac(), false);
-        }
-
-        if ($trackedInfo->GetSignal() < 40 && $db->GetDeviceState($lockDev->GetMac()) == 0)
-        {
-            $db->SetState($lockDev->GetMac(), true);
-        }
-        elseif ($trackedInfo->GetSignal() > 40 && $db->GetDeviceState($lockDev->GetMac()) == 1)
-        {
-            $db->SetState($lockDev->GetMac(), false);
-        }
-
-
-    }
-    else
-    {
-        /**
-         * Run this part if there has gone MORE than a minute
-         */
-
-
     }
 }
