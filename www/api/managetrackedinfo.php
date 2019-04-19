@@ -78,48 +78,17 @@ foreach ($targets as $target)
     {
         if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
         {
-            $oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
-            $newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
-            if ($newLastSeen - $oldLastSeen < 60)
+
+            if($db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[1],$trackedInfo->GetMacTarget()) && $db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[2],$trackedInfo->GetMacTarget()))
             {
-                /**
-                 * Run this part if there has gone LESS than a minute
-                 */
-
-                if($db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[1],$trackedInfo->GetMacTarget()) && $db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[2],$trackedInfo->GetMacTarget()))
+                if ($db->GetDeviceState($lightDev->GetMac()) == 0)
                 {
-                    if ($db->GetDeviceState($lightDev->GetMac()) == 0)
-                    {
-                        $db->SetState($lightDev->GetMac(), true);
-                    }
-                    elseif ($db->GetDeviceState($lightDev->GetMac()) == 1)
-                    {
-                        $db->SetState($lightDev->GetMac(), false);
-                    }
+                    $db->SetState($lightDev->GetMac(), true);
                 }
-
-
-
-
-
-                if ($trackedInfo->GetSignal() < 40 && $db->GetDeviceState($lockDev->GetMac()) == 0)
+                elseif ($db->GetDeviceState($lightDev->GetMac()) == 1)
                 {
-                    $db->SetState($lockDev->GetMac(), true);
+                    $db->SetState($lightDev->GetMac(), false);
                 }
-                elseif ($trackedInfo->GetSignal() > 40 && $db->GetDeviceState($lockDev->GetMac()) == 1)
-                {
-                    $db->SetState($lockDev->GetMac(), false);
-                }
-
-
-            }
-            else
-            {
-                /**
-                 * Run this part if there has gone MORE than a minute
-                 */
-
-
             }
         }
     }
