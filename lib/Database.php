@@ -431,7 +431,7 @@ class Database
 
         $trackedInfo = array();
         while ($statement->fetch()) {
-            array_push($trackedInfo, new TrackedInfo($mac,$macTarget,$signal,date_create_from_format("Y-m-d H:i:s")));
+            array_push($trackedInfo, new TrackedInfo($mac,$macTarget,$signal,date_create_from_format("Y-m-d H:i:s",$lastSeen)));
         }
         return $trackedInfo;
     }
