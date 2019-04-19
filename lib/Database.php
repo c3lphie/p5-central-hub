@@ -381,6 +381,10 @@ class Database
         $statement->bind_result($strength);
         while ($statement->fetch())
         {
+            if($strength == null)
+            {
+                return 99999;
+            }
             return $strength;
         }
     }
