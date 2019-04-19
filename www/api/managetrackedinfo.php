@@ -59,6 +59,9 @@ try {
 $oldLastSeen = $db->GetOldLastSeen($trackedInfo)->getTimestamp();
 $newLastSeen = $trackedInfo->GetLastSeen()->getTimestamp();
 
+$db->AddTrackedInfo($trackedInfo);
+die();
+
 if ($db->UpdateOrAddTrackedInfo($trackedInfo) == "UPDATED")
 {
     if ($newLastSeen - $oldLastSeen < 60)
