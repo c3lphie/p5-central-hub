@@ -3,7 +3,7 @@ function refresh() {
   location.reload(true);
 }
 
-let ip = "10.0.0.1";
+let ip = window.location.hostname;
 
 // Send event to api
 function NewEvent( eventName, eventDesc, deviceName, uDeviceName) {
