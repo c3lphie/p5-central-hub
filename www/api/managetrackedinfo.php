@@ -9,6 +9,8 @@ require_once __DIR__ . "/../../lib/MacUtils.php";
 $error = "";
 $db = new Database();
 
+$trackerMAC = array("DC:4F:22:0A:05:82","5C:CF:7F:69:08:3D","2C:3A:E8:1B:53:75");
+
 foreach ($db->GetDevices() as $device)
 {
     if ($device->GetType() == DeviceType::Light)
@@ -25,6 +27,12 @@ $targets = array();
 foreach ($db->GetTargets() as $target)
 {
     array_push($targets, $target);
+}
+
+$trackedInfos = array();
+foreach ($db->GetTrackedInfo() as $tracked)
+{
+    array_push($trackedInfos, $tracked);
 }
 
 $mac = strtoupper((string)$_GET["mac"]);
@@ -77,14 +85,22 @@ foreach ($targets as $target)
                 /**
                  * Run this part if there has gone LESS than a minute
                  */
-                if ($trackedInfo->GetSignal() < 20 && $db->GetDeviceState($lightDev->GetMac()) == 0)
+
+                if($db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[1],$trackedInfo->GetMacTarget()) && $db->GetSignalStrength($trackerMAC[0],$trackedInfo->GetMacTarget()) < $db->GetSignalStrength($trackerMAC[2],$trackedInfo->GetMacTarget()))
                 {
-                    $db->SetState($lightDev->GetMac(), true);
+                    if ($db->GetDeviceState($lightDev->GetMac()) == 0)
+                    {
+                        $db->SetState($lightDev->GetMac(), true);
+                    }
+                    elseif ($db->GetDeviceState($lightDev->GetMac()) == 1)
+                    {
+                        $db->SetState($lightDev->GetMac(), false);
+                    }
                 }
-                elseif ($trackedInfo->GetSignal() > 20 && $db->GetDeviceState($lightDev->GetMac()) == 1)
-                {
-                    $db->SetState($lightDev->GetMac(), false);
-                }
+
+
+
+
 
                 if ($trackedInfo->GetSignal() < 40 && $db->GetDeviceState($lockDev->GetMac()) == 0)
                 {

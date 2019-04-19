@@ -370,11 +370,11 @@ class Database
      * @param $trackedInfo TrackedInfo
      * @return int
      */
-    public function GetSignalStrength(TrackedInfo $trackedInfo):int
+    public function GetSignalStrength($mac, $macTarget):int
     {
         $statement = $this->_conn->prepare("SELECT SignalStrength FROM TrackedInfo WHERE Mac=? AND MacTarget=?");
 
-        $statement->bind_param("ss", $trackedInfo->GetMac(), $trackedInfo->GetMacTarget());
+        $statement->bind_param("ss", $mac, $macTarget);
 
         $statement->execute();
 
@@ -414,6 +414,26 @@ class Database
                 return "WIFI_LIGHT";
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function GetTrackedInfo(): array
+    {
+        $statement = $this->_conn->prepare("SELECT Mac, SignalStrength, MacTarget, LastSeen FROM TrackedInfo");
+
+        if (!$statement->execute()) Error("GetTargets failed");
+
+        /** @var string $mac */
+        /** @var string $name */
+        $statement->bind_result($mac, $signal, $macTarget, $lastSeen);
+
+        $trackedInfo = array();
+        while ($statement->fetch()) {
+            array_push($trackedInfo, new TrackedInfo($mac,$macTarget,$signal,$lastSeen));
+        }
+        return $trackedInfo;
     }
 
 }
