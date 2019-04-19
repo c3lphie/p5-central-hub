@@ -27,6 +27,13 @@ function NewDevice(name,mac) {
   Http.onreadystatechange =(e)=>{
     console.log(api);
     console.log(Http.response);
+    if(Http.responseText.includes("error")){
+      alert("An error occured check console for more information");
+      console.log(Http.responseText);
+    } else {
+      window.location.replace("http://"+ip+"/");
+    }
+
   }
 }
 
