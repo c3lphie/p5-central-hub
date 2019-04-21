@@ -4,8 +4,10 @@
 <head>
   <meta charset="utf-8">
   <title>Central hub</title>
+  <!-- Initialisering af Javascript filer -->
   <script src="scripts/lib.js" charset="utf-8"></script>
   <script src="scripts/hub.js"></script>
+  <!-- Formatering af tekst i tabellerne -->
   <style media="screen">
     table,
     th,
@@ -27,25 +29,28 @@
 <body>
   <div class="main">
     <h1>Central hub</h1>
+    <!-- Refresher siden, alternativ kan normale refresh metoder  -->
     <button type="button" name="button" onclick="refresh()">reload</button>
     <div class="userdevices">
       <h2>Mine devices</h2>
       <button type="button" name="newudev" id="newudev">Ny tlf</button>
+      <!-- Opsætning af tabel så den er tilstede selv uden data -->
       <div class="list">
         <table id="userDeviceList">
           <thead>
-            <tr>
-              <th>Navn</th>
-              <th>Mac</th>
-            </tr>
+          <tr>
+            <th>Navn</th>
+            <th>Mac</th>
+          </tr>
           </thead>
           <tbody>
-            <tr>
-            </tr>
+          <tr>
+          </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <!-- !!! Ikke i brug længere !!! -->
     <!-- <div class="events">
       <h2>Events</h2>
       <form action="http://10.0.0.1/newevent.html">
@@ -68,6 +73,7 @@
     </div> -->
     <div class="devices">
       <h2>IOT devices</h2>
+      <!-- Opsætning af tabel så den er tilstede selv uden data -->
       <div class="list">
         <table id="deviceList">
           <thead>
